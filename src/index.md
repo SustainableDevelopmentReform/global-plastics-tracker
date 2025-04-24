@@ -1,4 +1,4 @@
-# Untitled
+# Global plastics tracker
 
 This is the home page of your new Observable Framework project.
 
