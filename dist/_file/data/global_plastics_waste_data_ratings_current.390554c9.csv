@@ -1,0 +1,190 @@
+Country,Region,Type,Domestic primary material,Domestic Products,Virgin content consumption,Recycled content consumption,Primary material trade (imports),Primary material trade (exports),Products (imports),Products (exports),Total generated plastic waste,Waste recovered for recycling,Waste to Energy,Waste Incinerated (without energy recovery),Waste landfilled,Waste (import),Waste (Export)
+USA,North America,OECD,0,0,0,0,5,5,5,5,3,3,3,0,3,5,5
+UK,Europe,OECD,5,0,0,0,5,5,5,5,5,5,5,5,5,5,5
+Australia,Australia/Oceania,OECD,0,5,5,5,5,5,5,5,5,5,5,0,5,0,5
+Canada,North America,OECD,5,5,5,5,5,5,5,5,3,5,2,2,2,5,5
+New Zealand,Australia/Oceania,OECD,5,0,0,0,5,5,5,5,3,3,0,0,5,5,5
+Japan,Asia,OECD,5,5,5,5,5,5,5,5,0,0,0,0,0,5,5
+South Korea,Asia,OECD,5,5,0,0,5,5,5,5,0,0,0,0,0,0,0
+Norway,Europe,OECD,5,5,0,0,5,5,5,5,5,5,5,5,5,5,5
+Sweden,Europe,OECD,3,0,3,0,5,5,5,5,5,4,2,2,2,5,5
+Netherlands,Europe,OECD,3,0,3,0,5,5,5,5,5,5,5,5,5,5,5
+Austria,Europe,OECD,3,0,3,0,5,5,5,5,3,4,0,0,4,5,5
+Belgium,Europe,OECD,3,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Chile,South America,OECD,0,0,0,0,5,0,5,5,0,0,0,0,0,5,5
+Colombia,South America,OECD,0,0,0,0,0,5,0,0,0,0,0,0,0,5,5
+Costa Rica,Central America,OECD,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Czech Republic,Europe,OECD,0,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Denmark,Europe,OECD,3,0,3,0,5,5,5,5,5,4,4,0,4,5,5
+Estonia,Europe,OECD,3,5,3,0,5,5,5,5,3,4,4,0,4,5,5
+Finland,Europe,OECD,3,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Germany,Europe,OECD,3,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Greece,Europe,OECD,3,0,3,0,5,5,5,5,3,4,4,0,4,5,5
+Hungary,Europe,OECD,0,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Iceland,Europe,OECD,0,0,3,0,5,5,5,5,3,4,4,0,4,4,4
+Israel,Asia,OECD,0,0,0,0,0,0,5,5,3,0,0,0,0,5,5
+Italy,Europe,OECD,3,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Latvia,Europe,OECD,0,0,3,0,5,5,5,5,3,4,4,0,4,5,5
+Lithuania,Europe,OECD,3,0,3,0,5,5,5,5,3,4,4,0,4,5,5
+Luxembourg,Europe,OECD,0,0,3,0,5,5,5,5,3,4,4,0,4,5,5
+Mexico,Central America,OECD,0,0,0,0,5,5,5,5,3,0,0,0,0,5,5
+Poland,Europe,OECD,3,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Portugal,Europe,OECD,3,0,3,0,5,5,5,5,3,4,4,3,4,5,5
+Slovakia,Europe,OECD,0,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Slovenia,Europe,OECD,0,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Spain,Europe,OECD,3,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Switzerland,Europe,OECD,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Turkey,Asia/Europe,OECD,0,0,3,0,5,5,5,5,3,0,4,0,4,5,5
+Andorra,Europe,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Bulgaria,Europe,Other,3,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Croatia,Europe,Other,3,0,0,0,5,5,5,5,3,4,4,4,4,5,5
+Cyprus,Europe,Other,0,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+France,Europe,OECD,3,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Ireland,Europe,OECD,0,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+Liechtenstein,Europe,Other,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0
+Malta,Europe,Other,0,0,3,0,5,5,5,5,3,4,4,0,4,5,5
+Monaco,Europe,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Romania,Europe,Other,3,0,3,0,5,5,5,5,3,4,4,4,4,5,5
+San Marino,Europe,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Nepal,Asia,Other,0,0,0,0,5,5,5,5,2,1,0,1,1,5,5
+Mongolia,Asia,Other,0,0,0,0,5,5,5,5,4,0,0,0,0,5,5
+Maldives,Asia,Other,0,0,0,0,0,5,5,5,2,1,0,1,0,5,5
+Fiji ,Australia/Oceania,Other,0,0,0,0,5,5,5,5,2,2,0,0,2,5,5
+Samoa,Australia/Oceania,Other,0,0,0,0,0,5,5,5,2,2,0,2,2,5,5
+Vietnam,Asia,Other,0,0,0,0,5,5,5,5,0,2,0,1,1,5,5
+India,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Malaysia,Asia,Other,5,5,0,0,5,5,5,5,0,0,0,0,0,5,5
+Bangladesh,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Sri Lanka,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+China,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+South Africa,Africa,Other,0,0,0,0,5,5,5,5,5,5,4,4,4,5,5
+Saudi Arabia,Asia,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Nigeria,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Egypt,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Iran,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Thailand,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Singapore,Asia,Other,0,0,0,0,5,5,5,5,5,2,2,2,2,5,5
+United Arab Emirates,Asia,Other,3,3,0,0,5,5,5,5,3,0,0,0,0,5,5
+Ukraine,Europe,Other,0,0,0,0,5,5,5,5,3,5,0,5,0,5,5
+Afghanistan,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Albania,Europe,Other,0,0,3,0,5,5,5,5,0,0,0,0,0,5,5
+Algeria,Africa,Other,0,0,0,0,5,5,5,5,3,0,0,0,0,5,5
+Angola,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Antigua and Barbuda,North America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Armenia,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Azerbaijan,Asia,Other,0,1,0,0,5,5,5,5,3,0,3,0,3,5,5
+Bahamas,North America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Bahrain,Asia,Other,3,0,0,0,5,5,5,5,5,3,0,0,3,5,5
+Barbados,North America,Other,0,0,0,0,5,5,5,5,2,0,0,0,0,5,5
+Belarus,Europe,Other,5,5,0,0,5,5,5,5,3,0,0,0,0,5,5
+Belize,Central America,Other,0,0,0,0,5,5,5,5,1,0,0,0,0,5,5
+Benin,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Bhutan,Asia,Other,0,0,0,0,0,0,5,5,2,0,0,0,0,5,5
+Bolivia,South America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+bosnia and herzegovina ,Europe,Other,3,0,3,0,5,5,5,5,3,0,0,0,0,5,5
+Botswana,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Brazil,South America,OECD,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Brunei,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Burkina Faso,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Burundi,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Cambodia,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,0,0
+Cameroon,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Cabo Verde,Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,0
+Central African Republic,Africa,Other,0,0,0,0,5,0,5,5,0,0,0,0,0,5,5
+Chad,Africa,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Comoros,Africa,Other,0,0,0,0,5,0,5,5,0,0,0,0,0,5,0
+Congo (Brazzaville),Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Congo (Democratic Republic),Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Cuba,North America,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Djibouti,Africa,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5
+Dominica,North America,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,0
+Dominican Republic,North America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+El Salvador,Central America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Equatorial Guinea,Africa,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Eritrea,Africa,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Ethiopia,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Gabon,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Gambia,Africa,Other,0,0,0,0,5,0,5,5,0,0,0,0,0,5,0
+Georgia,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Grenada,North America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Guatemala,Central America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Guinea,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Guinea-Bissau,Africa,Other,0,0,0,0,5,0,5,5,0,0,0,0,0,0,0
+Guyana,South America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Haiti,North America,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Honduras,Central America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Iraq,Asia,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Ivory Coast,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Jamaica,North America,Other,0,0,0,0,5,5,5,5,2,0,0,0,0,5,5
+Jordan,Asia,Other,0,0,0,0,5,5,5,5,3,3,0,0,0,5,5
+Kazakhstan,Asia,Other,0,0,0,0,5,5,5,5,5,3,3,3,3,5,5
+Kiribati,Australia/Oceania,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Kuwait,Asia,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Kyrgyzstan,Asia,Other,0,0,0,0,5,5,5,5,3,0,0,0,0,5,5
+Laos,Asia,Other,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0
+Lebanon,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Lesotho,Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Liberia,Africa,Other,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0
+Libya,Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,0,0
+North Macedonia,Europe,Other,0,0,3,0,5,5,5,5,5,4,4,0,4,5,5
+Madagascar,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Malawi,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Mali,Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Marshall Islands,Australia/Oceania,Other,0,0,0,0,0,0,0,0,2,2,0,0,2,0,0
+Mauritania,Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Mauritius,Africa,Other,0,0,0,0,5,5,5,5,2,2,0,0,2,5,5
+Micronesia,Australia/Oceania,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Moldova,Europe,Other,0,5,0,0,5,5,5,5,3,0,0,0,3,5,5
+Montenegro,Europe,Other,0,0,0,0,0,5,5,5,3,4,4,0,4,5,5
+Morocco,Africa,Other,0,0,0,0,0,5,5,5,0,0,0,0,0,5,5
+Mozambique,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Myanmar (Burma),Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Namibia,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Nauru,Australia/Oceania,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Nicaragua,Central America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Niger,Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+North Korea (Democratic People's Republic of Korea),Asia,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Oman,Asia,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Palau,Australia/Oceania,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Palestine,Asia,Other,0,0,0,0,0,0,5,5,2,0,0,0,0,5,5
+Panama,Central America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Papua New Guinea,Australia/Oceania,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Paraguay,South America,Other,0,0,0,0,0,5,5,5,0,0,0,0,0,5,5
+Peru,South America,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Qatar,Asia,Other,0,0,0,0,5,0,5,5,3,5,0,0,0,5,0
+Rwanda,Africa,Other,0,0,0,0,0,0,5,5,1,0,0,0,0,5,5
+Saint Kitts and Nevis,North America,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,0,0
+Saint Lucia,North America,Other,0,0,0,0,0,0,5,5,2,0,0,0,0,5,5
+Saint Vincent and the Grenadines,North America,Other,0,0,0,0,5,0,5,5,2,0,0,0,3,5,5
+São Tomé and Príncipe,Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,0
+Senegal,Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Serbia,Europe,Other,0,0,0,0,5,0,5,5,0,4,4,0,4,5,5
+Seychelles,Africa,Other,0,0,0,0,0,0,5,5,0,2,0,0,0,5,0
+Sierra Leone,Africa,Other,0,0,0,0,0,0,5,5,1,0,0,0,0,5,5
+Solomon Islands,Australia/Oceania,Other,0,0,0,0,0,0,5,5,1,0,0,0,0,5,0
+Somalia,Africa,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+South Sudan,Africa,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Sudan,Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Suriname,South America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Swaziland (Eswatini),Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Syria,Asia,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Tajikistan,Asia,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Tanzania,Africa,Other,0,1,0,0,5,5,5,5,0,0,0,0,0,5,5
+Timor-Leste,Asia,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Togo,Africa,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Tonga,Australia/Oceania,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,0
+Trinidad and Tobago,North America,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Tunisia,Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Turkmenistan,Asia,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Tuvalu,Australia/Oceania,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Uganda,Africa,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Uruguay,South America,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Uzbekistan,Asia,Other,0,0,0,0,5,5,5,5,0,0,0,0,0,5,5
+Vanuatu,Australia/Oceania,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Venezuela,South America,Other,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Yemen,Asia,Other,0,0,0,0,0,0,5,5,0,0,0,0,0,5,5
+Zambia,Africa,Other,0,0,0,0,5,5,0,0,0,0,0,0,0,5,5
+Zimbabwe,Africa,Other,0,0,0,0,5,5,0,0,0,0,0,0,0,5,5
+Kosovo,Europe,Other,0,0,0,0,0,0,0,0,2,4,4,4,4,0,0
+Hong Kong,Asia,Other,0,0,0,0,5,5,5,5,5,5,0,0,5,5,5
+Ghana,Africa,Other,,,,,,,,,,,,,,,
