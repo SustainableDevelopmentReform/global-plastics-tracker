@@ -2,75 +2,22 @@
 
 ```js
 // Balancing authority demand
-const plastics_ratings = FileAttachment("data/global_plastics_waste_data_ratings_current.csv").csv({typed: true});
+const plastics_ratings_raw = FileAttachment("data/global_plastics_waste_data_ratings_current.csv").csv({typed: true});
 ```
 
 ```js
-const plastics_ratings_supply = plastics_ratings.map((d) => ({
+const plastics_ratings = plastics_ratings_raw.map((d) => ({
   "Country": d["Country"],
   "Region": d["Region"],
   "Type": d["Type"],
   "Domestic primary material": +d["Domestic primary material"],
   "Domestic Products": +d["Domestic Products"],
   "Virgin content consumption": +d["Virgin content consumption"],
-  "Recycled content consumption": +d["Recycled content consumption"]
-}));
-
-// Create search input (for searchable table)
-const tableSearch_supply = Inputs.search(plastics_ratings_supply);
-const tableSearchValue_supply = view(tableSearch_supply);
-```
-
-```js
-// create column toggle list
-const colNames_supply = Object.keys(plastics_ratings_supply[0])
-const selectedColumnsInput_supply = Inputs.checkbox(colNames_supply, {
-  label: "Columns to display",
-  value: colNames_supply,
-  multiple: true})
-const selectedColumns_supply = Generators.input(selectedColumnsInput_supply);
-```
-
-<div>
-${selectedColumnsInput_supply}
-</div>
-
-```js
-const finalTable_supply = Inputs.table(tableSearchValue_supply, { 
-  rows: 15,
-  columns: selectedColumns_supply})
-```
-
-<div class="card">
-    <h2>Plastics supply and consumption</h2>
-    ${finalTable_supply}
-</div>
-
-
-```js
-//trade data
-const plastics_ratings_trade = plastics_ratings.map((d) => ({
-  "Country": d["Country"],
-  "Region": d["Region"],
-  "Type": d["Type"],
+  "Recycled content consumption": +d["Recycled content consumption"],
   "Primary material trade (imports)": +d["Primary material trade (imports)"],
   "Primary material trade (exports)": +d["Primary material trade (exports)"],
   "Products (imports)": +d["Products (imports)"],
-  "Products (exports)": +d["Products (exports)"]
-}));
-```
-<div class="card">
-    <h2>Plastics trade</h2>
-    ${Inputs.table(tableSearchValue, {rows: 15})}
-</div>
-
-
-
-```js
-const plastics_ratings_waste = plastics_ratings.map((d) => ({
-  "Country": d["Country"],
-  "Region": d["Region"],
-  "Type": d["Type"],
+  "Products (exports)": +d["Products (exports)"],
   "Total generated plastic waste": +d["Total generated plastic waste"],
   "Waste recovered for recycling": +d["Waste recovered for recycling"],
   "Waste to Energy": +d["Waste to Energy"],
@@ -80,16 +27,35 @@ const plastics_ratings_waste = plastics_ratings.map((d) => ({
   "Waste (Export)": +d["Waste (Export)"]
 }));
 
+// Create search input (for searchable table)
+const tableSearch = Inputs.search(plastics_ratings);
+const tableSearchValue = view(tableSearch);
+```
 
+```js
+// create column toggle list
+const colNames = Object.keys(plastics_ratings[0])
+const selectedColumnsInput = Inputs.checkbox(colNames, {
+  label: "Columns to display",
+  value: colNames,
+  multiple: true})
+const selectedColumns = Generators.input(selectedColumnsInput);
+```
 
-<div class="card">
-    <h2>Plastics waste and recycling</h2>
-    ${Inputs.table(tableSearchValue, {rows: 15})}
+<div>
+${selectedColumnsInput}
 </div>
 
+```js
+const finalTable = Inputs.table(tableSearchValue, { 
+  rows: 15,
+  columns: selectedColumns})
+```
 
-
-
+<div class="card">
+    <h2>Plastics register</h2>
+    ${finalTable}
+</div>
 
 
 
