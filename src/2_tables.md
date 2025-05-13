@@ -1,7 +1,7 @@
 # Table view
 
 ```js
-// Balancing authority demand
+// load the plastics data
 const plastics_ratings_raw = FileAttachment("data/global_plastics_waste_data_ratings_current.csv").csv({typed: true});
 ```
 
@@ -35,16 +35,19 @@ const tableSearchValue = view(tableSearch);
 ```js
 // create column toggle list
 const colNames = Object.keys(plastics_ratings[0])
-const selectedColumnsInput = Inputs.checkbox(colNames, {
+const selectedColumns = view(Inputs.checkbox(colNames, {
   label: "Columns to display",
   value: colNames,
-  multiple: true})
-const selectedColumns = Generators.input(selectedColumnsInput);
+  multiple: true}))
 ```
-
-<div>
-${selectedColumnsInput}
-</div>
+```js
+// if not using the view wrapper above, then you need the generator
+//const selectedColumns = Generators.input(selectedColumns);
+//Then use this html in the appropriate section
+//<div> 
+//${selectedColumnsInput}
+//</div>
+```
 
 ```js
 const finalTable = Inputs.table(tableSearchValue, { 
