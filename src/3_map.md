@@ -51,12 +51,12 @@ let selectedFieldCode = fieldCodes[0];
 
 // Define color stops for the legend
 const colorStops = [
-  { value: 0, color: '#440154' }, // Dark purple
-  { value: 1, color: '#3b528b' }, // Blue
-  { value: 2, color: '#21918c' }, // Teal
-  { value: 3, color: '#5ec962' }, // Green
-  { value: 4, color: '#9fda3a' }, // Light green
-  { value: 5, color: '#fde725' }  // Yellow
+  { value: 0, color: '#D3D3D3' }, // grey
+  { value: 1, color: '#FFDAB9' }, // pastle orange
+  { value: 2, color: '#FFD8B1' }, // peach
+  { value: 3, color: '#FFFFE0' }, // pale yellow
+  { value: 4, color: '#98FB98' }, // pale green
+  { value: 5, color: '#008000' }  // green
 ];
 
 // Create a field selector dropdown and add it to the map
@@ -194,7 +194,7 @@ function addLegend() {
   const naColorBox = document.createElement('div');
   naColorBox.style.width = '15px';
   naColorBox.style.height = '15px';
-  naColorBox.style.backgroundColor = '#f0f0f0';
+  naColorBox.style.backgroundColor = '#ffffff';
   naColorBox.style.marginRight = '5px';
   naColorBox.style.border = '1px solid #ccc';
   
@@ -232,12 +232,12 @@ function updateMapColors() {
       'interpolate',
       ['linear'],
       ['get', selectedFieldCode],
-      0, '#440154', // Dark purple (low values)
-      1, '#3b528b', // Blue
-      2, '#21918c', // Teal
-      3, '#5ec962', // Green
-      4, '#9fda3a', // Light green
-      5, '#fde725'  // Yellow (high values)
+      0, '#D3D3D3', // light grey
+      1, '#FFDAB9', // pastel orange
+      2, '#FFD8B1', // peach
+      3, '#FFFFE0', // pale yellow
+      4, '#98FB98', // pale green
+      5, '#008000'  // green
     ]
   ]);
 }
