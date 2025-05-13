@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Table view | Global plastics tracker</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="preload" as="style" href="./_observablehq/stdlib/inputs.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
+<link rel="modulepreload" href="./_observablehq/client.js">
+<link rel="modulepreload" href="./_observablehq/runtime.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
+<link rel="modulepreload" href="./_npm/htl@0.3.1/_esm.js">
+<link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
+<link rel="icon" href="./observable.png" type="image/png" sizes="32x32">
+<script type="module">
+
+import {define} from "./_observablehq/client.js";
+import {registerFile} from "./_observablehq/stdlib.js";
+
+registerFile("./data/global_plastics_waste_data_links_current.csv", {"name":"./data/global_plastics_waste_data_links_current.csv","mimeType":"text/csv","path":"./_file/data/global_plastics_waste_data_links_current.190d3a8a.csv","lastModified":1745479301357});
+registerFile("./data/global_plastics_waste_data_ratings_current.csv", {"name":"./data/global_plastics_waste_data_ratings_current.csv","mimeType":"text/csv","path":"./_file/data/global_plastics_waste_data_ratings_current.390554c9.csv","lastModified":1745479301357});
+
+define({id: "b78fd37c", inputs: ["FileAttachment"], outputs: ["plastics_ratings_raw","plastics_links_raw"], body: (FileAttachment) => {
+// load the plastics data
+const plastics_ratings_raw = FileAttachment("./data/global_plastics_waste_data_ratings_current.csv").csv({typed: true});
+// load the corresponding links data
+const plastics_links_raw = FileAttachment("./data/global_plastics_waste_data_links_current.csv").csv({typed: false}); // URLs are strings
+return {plastics_ratings_raw,plastics_links_raw};
+}});
+
+define({id: "d0e4846c", inputs: ["plastics_ratings_raw","Inputs","view"], outputs: ["plastics_ratings","tableSearch","tableSearchValue"], body: (plastics_ratings_raw,Inputs,view) => {
+// --- Table Cell Formatting Logic ---
+
+// Define the color mapping based on cell values
+const plastics_ratings = plastics_ratings_raw.map((d) => ({
+  "Country": d["Country"],
+  "Region": d["Region"],
+  "Type": d["Type"],
+  "Domestic primary material": +d["Domestic primary material"],
+  "Domestic Products": +d["Domestic Products"],
+  "Virgin content consumption": +d["Virgin content consumption"],
+  "Recycled content consumption": +d["Recycled content consumption"],
+  "Primary material trade (imports)": +d["Primary material trade (imports)"],
+  "Primary material trade (exports)": +d["Primary material trade (exports)"],
+  "Products (imports)": +d["Products (imports)"],
+  "Products (exports)": +d["Products (exports)"],
+  "Total generated plastic waste": +d["Total generated plastic waste"],
+  "Waste recovered for recycling": +d["Waste recovered for recycling"],
+  "Waste to Energy": +d["Waste to Energy"],
+  "Waste Incinerated (without energy recovery)": +d["Waste Incinerated (without energy recovery)"],
+  "Waste landfilled": +d["Waste landfilled"],
+  "Waste (import)": +d["Waste (import)"],
+  "Waste (Export)": +d["Waste (Export)"]
+}));
+
+// Create search input (for searchable table)
+const tableSearch = Inputs.search(plastics_ratings, {placeholder: "Search table..."});
+const tableSearchValue = view(tableSearch);
+return {plastics_ratings,tableSearch,tableSearchValue};
+}});
+
+define({id: "061d3c3f", inputs: ["plastics_links_raw"], outputs: ["valueColorMap","numericColumnsToColorAndLink","linksLookup"], body: (plastics_links_raw) => {
+// --- Configurations for Cell Styling and Linking ---
+// Define the color mapping based on cell values
+const valueColorMap = {
+  0: "#D3D3D3", // light grey
+  1: "#FFDAB9", // pastel orange
+  2: "#FFD8B1", // peach
+  3: "#FFFFE0", // pale yellow
+  4: "#98FB98", // pale green
+  5: "#008000"  // green
+};
+
+// List of column names that will have colored ratings and may have links
+const numericColumnsToColorAndLink = [ // Renamed for clarity
+  "Domestic primary material", "Domestic Products", "Virgin content consumption",
+  "Recycled content consumption", "Primary material trade (imports)",
+  "Primary material trade (exports)", "Products (imports)", "Products (exports)",
+  "Total generated plastic waste", "Waste recovered for recycling", "Waste to Energy",
+  "Waste Incinerated (without energy recovery)", "Waste landfilled",
+  "Waste (import)", "Waste (Export)"
+];
+
+// Process links data into a lookup structure: linksLookup[Country][ColumnName] = URL
+// Process links data into a lookup structure: linksLookup[Country][ColumnName] = URL
+const linksLookup = {};
+if (plastics_links_raw) {
+  plastics_links_raw.forEach((link_row, index) => {
+    const country = link_row["Country"];
+    if (country && String(country).trim() !== "") {
+      if (!linksLookup[country]) {
+        linksLookup[country] = {};
+      }
+      for (const colName of numericColumnsToColorAndLink) {
+        if (link_row[colName] && String(link_row[colName]).trim() !== "") {
+          const url_val = String(link_row[colName]).trim();
+          linksLookup[country][colName] = url_val;
+        }
+      }
+    } else {
+      console.warn(`Link data row (index ${index}) found with no valid Country:`, link_row);
+    }
+  });
+  // Log the first few entries of linksLookup to verify structure
+  console.log("linksLookup populated. Sample (first 5 countries):", Object.fromEntries(Object.entries(linksLookup).slice(0,5)));
+  if (Object.keys(linksLookup).length === 0) {
+      console.warn("linksLookup is empty after processing. Check CSV content and country names.");
+  }
+} else {
+  console.warn("plastics_links_raw is undefined or null after loading. linksLookup will be empty.");
+}
+return {valueColorMap,numericColumnsToColorAndLink,linksLookup};
+}});
+
+define({id: "e02232bd", inputs: ["plastics_ratings","view","Inputs"], outputs: ["colNames","startList","selectedColumns"], body: (plastics_ratings,view,Inputs) => {
+// create column toggle list
+const colNames = Object.keys(plastics_ratings[0])
+const startList = ["Country", "Domestic primary material", "Domestic Products", "Primary material trade (imports)", "Primary material trade (exports)", "Total generated plastic waste"]
+const selectedColumns = view(Inputs.checkbox(colNames, {
+  label: "Columns to display",
+  value: startList,
+  multiple: true}))
+return {colNames,startList,selectedColumns};
+}});
+
+define({id: "e10780b0", body: () => {
+// if not using the view wrapper above, then you need the generator
+//const selectedColumns = Generators.input(selectedColumns);
+//Then use this html in the appropriate section
+//<div> 
+//${selectedColumnsInput}
+//</div>
+}});
+
+define({id: "d921db8b", inputs: ["plastics_ratings","numericColumnsToColorAndLink","valueColorMap","linksLookup","Inputs","tableSearchValue","selectedColumns"], outputs: ["createStyledCell","tableCellFormats","finalTable"], body: (plastics_ratings,numericColumnsToColorAndLink,valueColorMap,linksLookup,Inputs,tableSearchValue,selectedColumns) => {
+// --- Table Cell Formatting Logic ---
+
+function createStyledCell(value, {backgroundColor = 'transparent', textAlign = 'left', padding = '5px 8px'} = {}) {
+  const span = document.createElement("span");
+  span.style.backgroundColor = backgroundColor;
+  span.style.color = 'black';
+  span.style.padding = padding;
+  span.style.display = "block";
+  span.style.borderRadius = "4px";
+  span.style.textAlign = textAlign;
+  span.textContent = String(value);
+  return span;
+}
+
+const tableCellFormats = {};
+if (plastics_ratings.length > 0) {
+  const allColumnNames = Object.keys(plastics_ratings[0]);
+  const firstRow = plastics_ratings[0];
+
+  for (const colName of allColumnNames) {
+    if (numericColumnsToColorAndLink.includes(colName)) {
+      tableCellFormats[colName] = (cellValue, i, rowData) => { // i is rowIndex, rowData is the data for the current row
+        let styledContentSpan;
+        if (typeof cellValue === 'number' && valueColorMap[cellValue] !== undefined) {
+          const backgroundColor = valueColorMap[cellValue];
+          styledContentSpan = createStyledCell(cellValue, {backgroundColor, textAlign: 'center'});
+        } else if (typeof cellValue === 'number') {
+          styledContentSpan = createStyledCell(cellValue, {textAlign: 'center'});
+        } else {
+          styledContentSpan = createStyledCell(String(cellValue), {textAlign: 'left'});
+        }
+
+        const countryName = rowData["Country"];
+        let url = null;
+
+        if (!linksLookup) {
+          if (i === 0) console.warn("linksLookup object is not available in cell formatter."); // Log once
+        } else if (!linksLookup[countryName]) {
+          // Optional: Log if a country in ratings table is not found in linksLookup (can be verbose)
+          // if (i < 10) console.log(`Formatter: Country '${countryName}' not found in linksLookup.`);
+        } else if (!linksLookup[countryName][colName]) {
+          // Optional: Log if a specific column for a country is not found (can be verbose)
+          // if (i < 10) console.log(`Formatter: No link for ${countryName} - ${colName}`);
+        } else {
+          url = linksLookup[countryName][colName];
+        }
+        
+        // Log found URL for a few rows to help debug
+        if (i < 5 && numericColumnsToColorAndLink.includes(colName)) { // Log only for relevant columns and a few rows
+            if(url) console.log(`Row ${i}, Country: ${countryName}, Col: ${colName} - Found URL: ${url}`);
+            // else console.log(`Row ${i}, Country: ${countryName}, Col: ${colName} - No URL found.`);
+        }
+
+        if (url && typeof url === 'string' && url.trim() !== "" && (url.startsWith('http://') || url.startsWith('https://'))) {
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.target = "_blank";
+          anchor.rel = "noopener noreferrer";
+          anchor.style.display = "block"; // Anchor behaves as a block, making the styledContentSpan area clickable
+          anchor.style.textDecoration = "none";
+          anchor.style.color = "inherit"; // Inherits text color from span
+          
+          anchor.appendChild(styledContentSpan);
+          return anchor;
+        } else {
+          if (url && i < 5) { // If a URL was retrieved but failed validation
+            console.warn(`Invalid or malformed URL for Row ${i}, ${countryName}, ${colName}: '${url}'`);
+          }
+          return styledContentSpan;
+        }
+      };
+    } else if (typeof firstRow[colName] === 'number') {
+      tableCellFormats[colName] = (cellValue) => createStyledCell(cellValue, {textAlign: 'right'});
+    } else {
+      tableCellFormats[colName] = (cellValue) => createStyledCell(cellValue, {textAlign: 'left'});
+    }
+  }
+}
+
+const finalTable = Inputs.table(tableSearchValue, {
+  rows: 15,
+  columns: selectedColumns,
+  format: tableCellFormats,
+  width: "100%"
+});
+return {createStyledCell,tableCellFormats,finalTable};
+}});
+
+define({id: "00c5d87f", inline: true, inputs: ["finalTable","display"], body: async (finalTable,display) => {
+display(await(
+finalTable
+))
+}});
+
+</script>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./">Global plastics tracker</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./1_about">About</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./2_tables">Table view</a></li>
+    <li class="observablehq-link"><a href="./3_map">Map view</a></li>
+    <li class="observablehq-link"><a href="./4_resources">Resources</a></li>
+    <li class="observablehq-link"><a href="./5_contribute">Contribute data</a></li>
+  </ol>
+</nav>
+<script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<aside id="observablehq-toc" data-selector="h1:not(:first-of-type), h2:first-child, :not(h1) + h2">
+<nav>
+</nav>
+</aside>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<h1 id="table-view" tabindex="-1"><a class="observablehq-header-anchor" href="#table-view">Table view</a></h1>
+<div id="cell-b78fd37c" class="observablehq observablehq--block"></div>
+<div id="cell-d0e4846c" class="observablehq observablehq--block"></div>
+<div id="cell-061d3c3f" class="observablehq observablehq--block"></div>
+<div id="cell-e02232bd" class="observablehq observablehq--block"></div>
+<div id="cell-e10780b0" class="observablehq observablehq--block"></div>
+<div id="cell-d921db8b" class="observablehq observablehq--block"></div>
+<div class="card">
+    <h2>Plastics register</h2>
+    <span id="cell-00c5d87f" class="observablehq--loading"></span>
+</div>
+<div class="small note">The Global Plastics Data tracker provides easy access to the sources of individual data points for each country, across the whole supply-chain.  The Tracker refers only to Government published data and statistics for all aspects of the supply-chain. Each data point has been assigned a “Data score” which indicates how suitable the data is for informing annual flows of plastic in the country. The highest data scores are assigned to the data points that report plastic-specific data and are reported annually. Lower data scores are given to data points that do not publish plastic-specific data, and/or have published data infrequently.<br>The tracker was developed via a rapid assessment in the run up to INC-5 - the analysts therefore welcome users to improve the sources and provide feedback. <br>Each rating has a link to the original source of information. For feedback, updates or help, please email <a href="mailto:helena.dickinson@unsw.edu.au" target="_blank" rel="noopener noreferrer">Helena Dickinson</a> or <a href="mailto:e.northrop@unsw.edu.au" target="_blank" rel="noopener noreferrer">Eliza Northrop</a>.</div></main>
+<footer id="observablehq-footer">
+<nav><a rel="prev" href="./1_about"><span>About</span></a><a rel="next" href="./3_map"><span>Map view</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-13T12:29:45">May 13, 2025</a>.</div>
+</footer>
+</div>
