@@ -10,10 +10,87 @@
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
-<link rel="icon" href="./_file/data/csdr.1c6d602b.png" type="image/png" sizes="32x32">
+<link rel="icon" href="./_file/data/csdr.bdd05e74.png" type="image/png" sizes="32x32">
 <script type="module">
 
-import "./_observablehq/client.js";
+import {define} from "./_observablehq/client.js";
+
+define({id: "64f82b2c", outputs: ["valueColorMap"], body: () => {
+const valueColorMap = {
+  0: "#D3D3D3", // light grey
+  1: "#FFDAB9", // pastel orange
+  2: "#FFD8B1", // peach
+  3: "#FFFFE0", // pale yellow
+  4: "#98FB98", // pale green
+  5: "#008000"  // green
+};
+return {valueColorMap};
+}});
+
+define({id: "58a6a4c7", inputs: ["valueColorMap"], body: (valueColorMap) => {
+// This code block should run after the Markdown table is rendered.
+{ // Using a block to keep variables local
+  const tableWrapper = document.querySelector(".data-score-legend-table");
+
+  if (tableWrapper) {
+    const table = tableWrapper.querySelector("table");
+    if (table) {
+      const dataRows = table.querySelectorAll("tbody tr"); // Assumes Markdown generates <thead> and <tbody>
+
+      dataRows.forEach(row => {
+        // "Data score" is the second column, so its index is 1.
+        const scoreCell = row.cells[1]; 
+        
+        if (scoreCell) {
+          const scoreText = scoreCell.textContent.trim();
+          
+          // Handle the "(_no score_)" case explicitly
+          if (scoreText.toLowerCase() === "(_no score_)" || scoreText === "") {
+            // For rows with no score, you can apply a default style or do nothing.
+            // Example: row.style.backgroundColor = "var(--theme-background-alt)";
+            // To explicitly ensure no background from previous runs (if any):
+            // row.style.backgroundColor = ""; 
+            // Array.from(row.cells).forEach(cell => { cell.style.color = ""; });
+            return; // Skip coloring for this row
+          }
+
+          const score = parseInt(scoreText, 10);
+
+          if (!isNaN(score) && valueColorMap[score] !== undefined) {
+            const backgroundColor = valueColorMap[score];
+            row.style.backgroundColor = backgroundColor;
+
+            // Adjust text color for better contrast on dark backgrounds
+            let textColor = "black"; // Default text color
+            if (score === 5) { // Dark green background
+              textColor = "white";
+            }
+            // Apply text color to all cells in the row for consistency
+            Array.from(row.cells).forEach(cell => {
+              cell.style.color = textColor;
+            });
+
+          } else {
+            // Fallback for scores not in map or unparseable, ensure default text color
+            Array.from(row.cells).forEach(cell => {
+              cell.style.color = "black";
+            });
+            // console.warn(`Could not parse score or no color defined for score: '${scoreText}' in row:`, row);
+          }
+        }
+      });
+    } else {
+      console.warn("No <table> element found within the '.data-score-legend-table' div.");
+    }
+  } else {
+    console.warn("The wrapper div with class '.data-score-legend-table' was not found. Make sure it exists and the class name is correct.");
+  }
+
+  // This script runs once when the cell executes. If the table content changes
+  // dynamically by other means, this script would need to be re-run or adapted.
+  // For a static Markdown table, this is sufficient.
+}
+}});
 
 </script>
 <input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
@@ -48,6 +125,8 @@ import "./_observablehq/client.js";
 <h2 id="about-the-data-ratings-and-methods" tabindex="-1"><a class="observablehq-header-anchor" href="#about-the-data-ratings-and-methods">About the data ratings and methods</a></h2>
 <p>The Global Plastics Data tracker indicates where there are gaps in government published plastics data across the supply-chain. The tracker also provides access to the sources of individual data points for each country, across the whole supply-chain.</p>
 <p>Each data point has been assigned a "Data score" which indicates how suitable the data is for informing annual flows of plastic in the country.</p>
+<div id="cell-64f82b2c" class="observablehq observablehq--block"></div>
+<div class="data-score-legend-table">
 <table>
 <thead>
 <tr>
@@ -82,8 +161,11 @@ import "./_observablehq/client.js";
 </tr>
 </tbody>
 </table>
+</div>
+<div id="cell-58a6a4c7" class="observablehq observablehq--block"></div>
 <h3 id="links-to-further-resources" tabindex="-1"><a class="observablehq-header-anchor" href="#links-to-further-resources">Links to further resources</a></h3>
 <ul>
+<li>Resources page</li>
 <li>Methods</li>
 <li>Handbook</li>
 <li>Etc.</li>
@@ -98,6 +180,6 @@ import "./_observablehq/client.js";
 </main>
 <footer id="observablehq-footer">
 <nav><a rel="prev" href="./"><span>Global plastics tracker</span></a><a rel="next" href="./2_tables"><span>Table view</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-15T09:48:02">May 15, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-15T10:19:58">May 15, 2025</a>.</div>
 </footer>
 </div>
