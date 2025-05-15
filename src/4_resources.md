@@ -1,7 +1,11 @@
 # Resources
-
-## Handbook
+Some placehodler text on what oyu can find here in the resrouces section
 
 ## Methods
+- Palceholder 
 
-## Data download
+## Handbook
+- Palceholder 
+
+## Data downloads
+- Palceholder 
