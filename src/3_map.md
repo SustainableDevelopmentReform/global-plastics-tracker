@@ -15,13 +15,22 @@ const plasticgeo = FileAttachment("data/plastics_countries.geojson").json()
 
 <div id="map" style="width: 100%; height: 800px;"></div>
 
+
 ```js
+// choose the map style based on dark theme or not
+const mapStyle = document.createElement("mapStyle");
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    mapStyle.style.scheme = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
+  } else {
+    mapStyle.style.scheme = "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json";
+  }
+
 const map = new maplibregl.Map({
   container: "map",
   zoom: 1,
   center: [11.39, 47.29],
   hash: true,
-  style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
+  style: mapStyle.style.scheme,
   scrollZoom: true
 });
 
@@ -68,7 +77,7 @@ function addFieldSelector() {
   selectorContainer.style.top = '10px';
   selectorContainer.style.left = '10px'; // Moved to top left
   selectorContainer.style.zIndex = '1';
-  selectorContainer.style.backgroundColor = 'white';
+  selectorContainer.style.backgroundColor = 'var(--theme-background)';
   selectorContainer.style.padding = '10px';
   selectorContainer.style.borderRadius = '4px';
   selectorContainer.style.boxShadow = '0 0 10px rgba(0,0,0,0.1)';

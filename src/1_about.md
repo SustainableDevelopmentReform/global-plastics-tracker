@@ -26,7 +26,7 @@ const valueColorMap = {
 | *All categories:* Data published annually (not split by plastics)<br>*All categories:* Data not published since the end of 2018, but was previously published annually (split by plastics) | 3 |
 | *All categories:* Irregular publication of data (not split by plastics)<br>*All categories:* One off publication (split by plastics)<br>*All categories:* Plastics data published annually, but not provided in tonnage format | 2 |
 | *All categories:* One off publication (composition only)<br>*All categories:* One off publication (not split by plastics)<br>*All categories:* One off regional publication | 1 |
-| Not found | (_no score_) |
+| Not found (_no score_) | 0 |
 
 </div>
 
@@ -47,16 +47,7 @@ const valueColorMap = {
         if (scoreCell) {
           const scoreText = scoreCell.textContent.trim();
           
-          // Handle the "(_no score_)" case explicitly
-          if (scoreText.toLowerCase() === "(_no score_)" || scoreText === "") {
-            // For rows with no score, you can apply a default style or do nothing.
-            // Example: row.style.backgroundColor = "var(--theme-background-alt)";
-            // To explicitly ensure no background from previous runs (if any):
-            // row.style.backgroundColor = ""; 
-            // Array.from(row.cells).forEach(cell => { cell.style.color = ""; });
-            return; // Skip coloring for this row
-          }
-
+          // Handle the "top row" case explicitly
           const score = parseInt(scoreText, 10);
 
           if (!isNaN(score) && valueColorMap[score] !== undefined) {

@@ -127,7 +127,7 @@ const aboutCardContent = html`
 //const map_card_img = await FileAttachment("data/map_placeholder.png").image()
 const mapImageLink = html`
   <h2 style="text-align: left; width: 100%;">Global Map of the Plastics Data Register</h2>
-  <a href="/3_map" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: #D3D3D3; color: var(--theme-background); text-decoration: none; border-radius: 4px;">Explore the interactive map &raquo;
+  <a href="/3_map" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Explore the interactive map &raquo;
     <img src="${await FileAttachment("data/map_placeholder.png").url()}" alt="Global Plastics Map" style="max-width:100%; height:auto; border:1px solid #ddd; margin-top: 1em; border-radius: 4px;" />
   </a>
 `;
@@ -159,7 +159,7 @@ const mapImageLink = html`
        You can enhance it here if needed. */
     /* Example: border: 1px solid var(--theme-foreground-muted); */
     padding: 1.5rem; /* Standard card padding */
-    background-color: var(--theme-card-background, white);
+    background-color: var(--theme-card-background);
     border-radius: var(--theme-radius, 4px);
     box-shadow: var(--theme-shadow-2, 0 2px 4px rgba(0,0,0,0.1));
   }

@@ -91,7 +91,11 @@ const selectedColumns = view(Inputs.checkbox(colNames, {
 function createStyledCell(value, {backgroundColor = 'transparent', textAlign = 'left', padding = '5px 8px'} = {}) {
   const span = document.createElement("span");
   span.style.backgroundColor = backgroundColor;
-  span.style.color = 'black';
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    span.style.color = '#f0f0f0';
+  } else {
+    span.style.color = 'black';
+  }
   span.style.padding = padding;
   span.style.display = "block";
   span.style.borderRadius = "4px";
