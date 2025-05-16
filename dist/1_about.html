@@ -27,7 +27,7 @@ const valueColorMap = {
 return {valueColorMap};
 }});
 
-define({id: "58a6a4c7", inputs: ["valueColorMap"], body: (valueColorMap) => {
+define({id: "f2f89d26", inputs: ["valueColorMap"], body: (valueColorMap) => {
 // This code block should run after the Markdown table is rendered.
 { // Using a block to keep variables local
   const tableWrapper = document.querySelector(".data-score-legend-table");
@@ -44,16 +44,7 @@ define({id: "58a6a4c7", inputs: ["valueColorMap"], body: (valueColorMap) => {
         if (scoreCell) {
           const scoreText = scoreCell.textContent.trim();
           
-          // Handle the "(_no score_)" case explicitly
-          if (scoreText.toLowerCase() === "(_no score_)" || scoreText === "") {
-            // For rows with no score, you can apply a default style or do nothing.
-            // Example: row.style.backgroundColor = "var(--theme-background-alt)";
-            // To explicitly ensure no background from previous runs (if any):
-            // row.style.backgroundColor = ""; 
-            // Array.from(row.cells).forEach(cell => { cell.style.color = ""; });
-            return; // Skip coloring for this row
-          }
-
+          // Handle the "top row" case explicitly
           const score = parseInt(scoreText, 10);
 
           if (!isNaN(score) && valueColorMap[score] !== undefined) {
@@ -156,13 +147,13 @@ define({id: "58a6a4c7", inputs: ["valueColorMap"], body: (valueColorMap) => {
 <td>1</td>
 </tr>
 <tr>
-<td>Not found</td>
-<td>(<em>no score</em>)</td>
+<td>Not found (<em>no score</em>)</td>
+<td>0</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="cell-58a6a4c7" class="observablehq observablehq--block"></div>
+<div id="cell-f2f89d26" class="observablehq observablehq--block"></div>
 <h3 id="links-to-further-resources" tabindex="-1"><a class="observablehq-header-anchor" href="#links-to-further-resources">Links to further resources</a></h3>
 <ul>
 <li>Resources page</li>
@@ -180,6 +171,6 @@ define({id: "58a6a4c7", inputs: ["valueColorMap"], body: (valueColorMap) => {
 </main>
 <footer id="observablehq-footer">
 <nav><a rel="prev" href="./"><span>Global plastics tracker</span></a><a rel="next" href="./2_tables"><span>Table view</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-15T10:29:48">May 15, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-16T00:07:25">May 16, 2025</a>.</div>
 </footer>
 </div>

@@ -32,13 +32,21 @@ const plasticgeo = FileAttachment("./data/plastics_countries.geojson").json()
 return {plasticgeo};
 }});
 
-define({id: "35b20c0c", inputs: ["maplibregl","plasticgeo"], outputs: ["map","fieldCodes","fieldNames","codeToNameMapping","nameToCodeMapping","selectedFieldName","selectedFieldCode","colorStops","addFieldSelector","addLegend","updateLegendTitle","updateMapColors"], body: (maplibregl,plasticgeo) => {
+define({id: "55461151", inputs: ["maplibregl","plasticgeo"], outputs: ["mapStyle","map","fieldCodes","fieldNames","codeToNameMapping","nameToCodeMapping","selectedFieldName","selectedFieldCode","colorStops","addFieldSelector","addLegend","updateLegendTitle","updateMapColors"], body: (maplibregl,plasticgeo) => {
+// choose the map style based on dark theme or not
+const mapStyle = document.createElement("mapStyle");
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    mapStyle.style.scheme = "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
+  } else {
+    mapStyle.style.scheme = "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json";
+  }
+
 const map = new maplibregl.Map({
   container: "map",
   zoom: 1,
   center: [11.39, 47.29],
   hash: true,
-  style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
+  style: mapStyle.style.scheme,
   scrollZoom: true
 });
 
@@ -85,7 +93,7 @@ function addFieldSelector() {
   selectorContainer.style.top = '10px';
   selectorContainer.style.left = '10px'; // Moved to top left
   selectorContainer.style.zIndex = '1';
-  selectorContainer.style.backgroundColor = 'white';
+  selectorContainer.style.backgroundColor = 'var(--theme-background)';
   selectorContainer.style.padding = '10px';
   selectorContainer.style.borderRadius = '4px';
   selectorContainer.style.boxShadow = '0 0 10px rgba(0,0,0,0.1)';
@@ -345,7 +353,7 @@ map.on("load", function () {
     map.getCanvas().style.cursor = '';
   });
 });
-return {map,fieldCodes,fieldNames,codeToNameMapping,nameToCodeMapping,selectedFieldName,selectedFieldCode,colorStops,addFieldSelector,addLegend,updateLegendTitle,updateMapColors};
+return {mapStyle,map,fieldCodes,fieldNames,codeToNameMapping,nameToCodeMapping,selectedFieldName,selectedFieldCode,colorStops,addFieldSelector,addLegend,updateLegendTitle,updateMapColors};
 }});
 
 </script>
@@ -376,10 +384,10 @@ return {map,fieldCodes,fieldNames,codeToNameMapping,nameToCodeMapping,selectedFi
 <div id="cell-07372933" class="observablehq observablehq--block"></div>
 <div id="cell-d39729f6" class="observablehq observablehq--block"></div>
 <div id="map" style="width: 100%; height: 800px;"></div>
-<div id="cell-35b20c0c" class="observablehq observablehq--block"></div>
+<div id="cell-55461151" class="observablehq observablehq--block"></div>
 <div class="small note">The Global Plastics Data tracker provides easy access to the sources of individual data points for each country, across the whole supply-chain.  The Tracker refers only to Government published data and statistics for all aspects of the supply-chain. Each data point has been assigned a “Data score” which indicates how suitable the data is for informing annual flows of plastic in the country. The highest data scores are assigned to the data points that report plastic-specific data and are reported annually. Lower data scores are given to data points that do not publish plastic-specific data, and/or have published data infrequently.<br>The tracker was developed via a rapid assessment in the run up to INC-5 - the analysts therefore welcome users to improve the sources and provide feedback. <br>Each rating has a link to the original source of information. For feedback, updates or help, please email <a href="mailto:helena.dickinson@unsw.edu.au" target="_blank" rel="noopener noreferrer">Helena Dickinson</a> or <a href="mailto:e.northrop@unsw.edu.au" target="_blank" rel="noopener noreferrer">Eliza Northrop</a>.</div></main>
 <footer id="observablehq-footer">
 <nav><a rel="prev" href="./2_tables"><span>Table view</span></a><a rel="next" href="./4_resources"><span>Resources</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-15T10:29:48">May 15, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-16T00:07:25">May 16, 2025</a>.</div>
 </footer>
 </div>

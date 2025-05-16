@@ -109,7 +109,7 @@ function formatPercentage(value, fractionDigits = 1) {
 return {ratingsDataRaw,plasticCategories,reportedCountriesData,numReportedCountries,worldCountryTotal,percReported,countAllZeros,percAllZeros,countOneOrMoreHighRating,percOneOrMoreHighRating,countAverageOrMoreHighRating,percAverageOrMoreHighRating,formatPercentage};
 }});
 
-define({id: "f2537c16", inputs: ["html","formatPercentage","percReported","numReportedCountries","percAllZeros","percAverageOrMoreHighRating","FileAttachment"], outputs: ["statsCardContent","aboutCardContent","mapImageLink"], body: async (html,formatPercentage,percReported,numReportedCountries,percAllZeros,percAverageOrMoreHighRating,FileAttachment) => {
+define({id: "a46dff0d", inputs: ["html","formatPercentage","percReported","numReportedCountries","percAllZeros","percAverageOrMoreHighRating","FileAttachment"], outputs: ["statsCardContent","aboutCardContent","mapImageLink"], body: async (html,formatPercentage,percReported,numReportedCountries,percAllZeros,percAverageOrMoreHighRating,FileAttachment) => {
 // Content for the Top-Left Stats Card
 const statsCardContent = html`
   <div class="stat-item">
@@ -127,7 +127,7 @@ const statsCardContent = html`
     <span class="stat-value">${formatPercentage(percAverageOrMoreHighRating)}</span>
   </div>
   
-  <a href="/tables" style="display: inline-block; margin-top: 1.5em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">View Data Tables &raquo;</a>
+  <a href="/1_tables" style="display: inline-block; margin-top: 1.5em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">View Data Tables &raquo;</a>
 `;
 
 // Content for the Bottom-Left About Card
@@ -143,7 +143,7 @@ const aboutCardContent = html`
 //const map_card_img = await FileAttachment("data/map_placeholder.png").image()
 const mapImageLink = html`
   <h2 style="text-align: left; width: 100%;">Global Map of the Plastics Data Register</h2>
-  <a href="/3_map" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: #D3D3D3; color: var(--theme-background); text-decoration: none; border-radius: 4px;">Explore the interactive map &raquo;
+  <a href="/3_map" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Explore the interactive map &raquo;
     <img src="${await FileAttachment("./data/map_placeholder.png").url()}" alt="Global Plastics Map" style="max-width:100%; height:auto; border:1px solid #ddd; margin-top: 1em; border-radius: 4px;" />
   </a>
 `;
@@ -198,7 +198,7 @@ aboutCardContent
   <a href="/1_about" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Learn more about the register and tools »</a>
 </div>
 <div id="cell-1531978b" class="observablehq observablehq--block"></div>
-<div id="cell-f2537c16" class="observablehq observablehq--block"></div>
+<div id="cell-a46dff0d" class="observablehq observablehq--block"></div>
 <style>
   .dashboard-grid {
     display: grid;
@@ -225,7 +225,7 @@ aboutCardContent
        You can enhance it here if needed. */
     /* Example: border: 1px solid var(--theme-foreground-muted); */
     padding: 1.5rem; /* Standard card padding */
-    background-color: var(--theme-card-background, white);
+    background-color: var(--theme-card-background);
     border-radius: var(--theme-radius, 4px);
     box-shadow: var(--theme-shadow-2, 0 2px 4px rgba(0,0,0,0.1));
   }
@@ -307,6 +307,6 @@ aboutCardContent
 <div class="small note">The Global Plastics Data tracker provides easy access to the sources of individual data points for each country, across the whole supply-chain.  The Tracker refers only to Government published data and statistics for all aspects of the supply-chain. Each data point has been assigned a “Data score” which indicates how suitable the data is for informing annual flows of plastic in the country. The highest data scores are assigned to the data points that report plastic-specific data and are reported annually. Lower data scores are given to data points that do not publish plastic-specific data, and/or have published data infrequently.<br>The tracker was developed via a rapid assessment in the run up to INC-5 - the analysts therefore welcome users to improve the sources and provide feedback. <br>Each rating has a link to the original source of information. For feedback, updates or help, please email <a href="mailto:helena.dickinson@unsw.edu.au" target="_blank" rel="noopener noreferrer">Helena Dickinson</a> or <a href="mailto:e.northrop@unsw.edu.au" target="_blank" rel="noopener noreferrer">Eliza Northrop</a>.</div></main>
 <footer id="observablehq-footer">
 <nav><a rel="next" href="./1_about"><span>About</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-15T10:29:48">May 15, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-16T00:07:25">May 16, 2025</a>.</div>
 </footer>
 </div>
