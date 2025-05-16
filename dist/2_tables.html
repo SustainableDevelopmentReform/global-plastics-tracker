@@ -13,8 +13,8 @@
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
 <link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
 <link rel="modulepreload" href="./_npm/htl@0.3.1/_esm.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
 <link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
 <link rel="icon" href="./_file/data/csdr.bdd05e74.png" type="image/png" sizes="32x32">
 <script type="module">
@@ -33,7 +33,29 @@ const plastics_links_raw = FileAttachment("./data/global_plastics_waste_data_lin
 return {plastics_ratings_raw,plastics_links_raw};
 }});
 
-define({id: "4b0eece7", inputs: ["plastics_ratings_raw","Inputs","view","plastics_links_raw"], outputs: ["plastics_ratings_all_rows","tableSearch","tableSearchValue","valueColorMap","numericColumnsToColorAndLink"], body: (plastics_ratings_raw,Inputs,view,plastics_links_raw) => {
+define({id: "a88ccfbb", inputs: ["htl"], outputs: ["valueColorMap","scoreLegend"], body: (htl) => {
+const valueColorMap = {
+  0: "#D3D3D3", 1: "#FFDAB9", 2: "#FFD8B1",
+  3: "#FFFFE0", 4: "#98FB98", 5: "#008000"
+};
+
+const scoreLegend = htl.html`<div class="color-legend-wrapper">
+  <div class="color-legend">
+    <strong class="legend-title">Data score colour coding:</strong>
+    ${Object.entries(valueColorMap)
+      .sort(([scoreA], [scoreB]) => parseInt(scoreA) - parseInt(scoreB)) // Sort scores numerically
+      .map(([score, color]) => htl.html`
+      <div class="legend-item">
+        <span class="legend-swatch" style="background-color: ${color};"></span>
+        <span class="legend-label">${score}</span>
+      </div>
+    `)}
+  </div>
+</div>`;
+return {valueColorMap,scoreLegend};
+}});
+
+define({id: "b771a423", inputs: ["plastics_ratings_raw","Inputs","view","plastics_links_raw"], outputs: ["plastics_ratings_all_rows","tableSearch","tableSearchValue","numericColumnsToColorAndLink"], body: (plastics_ratings_raw,Inputs,view,plastics_links_raw) => {
 // This is the full, mapped array of all rating objects from your CSV.
 // It will be used to find the original index of rows shown in the filtered table.
 const plastics_ratings_all_rows = plastics_ratings_raw.map((d) => ({
@@ -61,11 +83,6 @@ const plastics_ratings_all_rows = plastics_ratings_raw.map((d) => ({
 const tableSearch = Inputs.search(plastics_ratings_all_rows, {placeholder: "Search table..."});
 const tableSearchValue = view(tableSearch); // This filtered/sorted array is passed to Inputs.table
 
-// Configurations for Cell Styling and Linking
-const valueColorMap = {
-  0: "#D3D3D3", 1: "#FFDAB9", 2: "#FFD8B1",
-  3: "#FFFFE0", 4: "#98FB98", 5: "#008000"
-};
 
 // Column names that will be colored and should get links.
 // These names must match the keys in plastics_ratings_all_rows objects
@@ -89,7 +106,7 @@ if (plastics_links_raw && plastics_links_raw.length > 0) {
 } else {
     console.warn("BLOCK 2 DEBUG: plastics_links_raw is empty or undefined.");
 }
-return {plastics_ratings_all_rows,tableSearch,tableSearchValue,valueColorMap,numericColumnsToColorAndLink};
+return {plastics_ratings_all_rows,tableSearch,tableSearchValue,numericColumnsToColorAndLink};
 }});
 
 define({id: "abb22477", inputs: ["plastics_ratings_all_rows","view","Inputs"], outputs: ["colNames","startList","selectedColumns"], body: (plastics_ratings_all_rows,view,Inputs) => {
@@ -112,7 +129,7 @@ define({id: "e10780b0", body: () => {
 //</div>
 }});
 
-define({id: "b50d4385", inputs: ["plastics_ratings_all_rows","plastics_links_raw","numericColumnsToColorAndLink","valueColorMap","Inputs","tableSearchValue","selectedColumns"], outputs: ["createStyledCell","tableCellFormats","finalTable"], body: (plastics_ratings_all_rows,plastics_links_raw,numericColumnsToColorAndLink,valueColorMap,Inputs,tableSearchValue,selectedColumns) => {
+define({id: "05498177", inputs: ["plastics_ratings_all_rows","plastics_links_raw","numericColumnsToColorAndLink","valueColorMap"], outputs: ["createStyledCell","tableCellFormats"], body: (plastics_ratings_all_rows,plastics_links_raw,numericColumnsToColorAndLink,valueColorMap) => {
 // --- Table Cell Formatting Logic ---
 
 function createStyledCell(value, {backgroundColor = 'transparent', textAlign = 'left', padding = '5px 8px'} = {}) {
@@ -198,20 +215,28 @@ if (plastics_ratings_all_rows.length > 0 && plastics_links_raw && plastics_links
 } else {
   console.warn("Block 4: plastics_ratings_all_rows or plastics_links_raw is empty. No table cell formats created or links will be missing.");
 }
+return {createStyledCell,tableCellFormats};
+}});
 
-const finalTable = Inputs.table(tableSearchValue, { // tableSearchValue is the filtered/sorted data
+define({id: "d2bb0119", inputs: ["view","Inputs","tableSearchValue","selectedColumns","tableCellFormats"], outputs: ["finalTable"], body: (view,Inputs,tableSearchValue,selectedColumns,tableCellFormats) => {
+const finalTable = view(Inputs.table(tableSearchValue, { // tableSearchValue is the filtered/sorted data
   rows: 15,
   columns: selectedColumns,
   format: tableCellFormats,
   width: "100%"
-});
-return {createStyledCell,tableCellFormats,finalTable};
+}));
+return {finalTable};
 }});
 
-define({id: "00c5d87f", inline: true, inputs: ["finalTable","display"], body: async (finalTable,display) => {
+define({id: "340c6cae", inline: true, inputs: ["scoreLegend","display"], body: async (scoreLegend,display) => {
 display(await(
-finalTable
+scoreLegend
 ))
+}});
+
+define({id: "b93f214c", inputs: ["view","Inputs"], outputs: ["downloadButton"], body: (view,Inputs) => {
+const downloadButton = view(Inputs.button("Download the data (coming soon...)"))
+return {downloadButton};
 }});
 
 </script>
@@ -227,7 +252,7 @@ finalTable
     <li class="observablehq-link observablehq-link-active"><a href="./2_tables">Table view</a></li>
     <li class="observablehq-link"><a href="./3_map">Map view</a></li>
     <li class="observablehq-link"><a href="./4_resources">Resources</a></li>
-    <li class="observablehq-link"><a href="./5_contribute">Contribute data</a></li>
+    <li class="observablehq-link"><a href="./5_contribute">Contribute data &amp; feedback</a></li>
   </ol>
 </nav>
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
@@ -239,17 +264,62 @@ finalTable
 <main id="observablehq-main" class="observablehq">
 <h1 id="table-view" tabindex="-1"><a class="observablehq-header-anchor" href="#table-view">Table view</a></h1>
 <div id="cell-b78fd37c" class="observablehq observablehq--block"></div>
-<div id="cell-4b0eece7" class="observablehq observablehq--block"></div>
+<div id="cell-a88ccfbb" class="observablehq observablehq--block"></div>
+<div id="cell-b771a423" class="observablehq observablehq--block"></div>
 <div id="cell-abb22477" class="observablehq observablehq--block"></div>
 <div id="cell-e10780b0" class="observablehq observablehq--block"></div>
-<div id="cell-b50d4385" class="observablehq observablehq--block"></div>
-<div class="card">
-    <h2>Plastics register</h2>
-    <span id="cell-00c5d87f" class="observablehq--loading"></span>
-</div>
+<div id="cell-05498177" class="observablehq observablehq--block"></div>
+<div id="cell-d2bb0119" class="observablehq observablehq--block"></div>
+<p><span id="cell-340c6cae" class="observablehq--loading"></span></p>
+<div id="cell-b93f214c" class="observablehq observablehq--block"></div>
+<style>
+  /* Add these styles to your existing <style> block or create a new one */
+
+  .color-legend-wrapper {
+    margin-bottom: 1.5rem; /* Space below the legend, before the table controls/table */
+    /* max-width: 700px; /* Optional: constrain width of legend container */
+  }
+
+  .color-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem; /* Vertical gap, Horizontal gap between items */
+    font-family: var(--sans-serif, system-ui, sans-serif);
+    font-size: 0.9em;
+    padding: 0.75rem 1rem;
+    background-color: var(--theme-background-alt);
+    border: 1px solid var(--theme-background);
+    border-radius: var(--theme-radius, 4px);
+  }
+
+  .legend-title {
+    font-weight: 600;
+    margin-right: 0.5rem;
+    color: var(--theme-foreground);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4em; /* Space between swatch and label */
+  }
+
+  .legend-swatch {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--theme-foreground-faint, #bbb); /* Border for light swatches */
+    border-radius: 3px;
+  }
+
+  .legend-label {
+    color: var(--theme-foreground-muted, #333);
+  }
+</style>
 <div class="small note">The Global Plastics Data tracker provides easy access to the sources of individual data points for each country, across the whole supply-chain.  The Tracker refers only to Government published data and statistics for all aspects of the supply-chain. Each data point has been assigned a “Data score” which indicates how suitable the data is for informing annual flows of plastic in the country. The highest data scores are assigned to the data points that report plastic-specific data and are reported annually. Lower data scores are given to data points that do not publish plastic-specific data, and/or have published data infrequently.<br>The tracker was developed via a rapid assessment in the run up to INC-5 - the analysts therefore welcome users to improve the sources and provide feedback. <br>Each rating has a link to the original source of information. For feedback, updates or help, please email <a href="mailto:helena.dickinson@unsw.edu.au" target="_blank" rel="noopener noreferrer">Helena Dickinson</a> or <a href="mailto:e.northrop@unsw.edu.au" target="_blank" rel="noopener noreferrer">Eliza Northrop</a>.</div></main>
 <footer id="observablehq-footer">
 <nav><a rel="prev" href="./1_about"><span>About</span></a><a rel="next" href="./3_map"><span>Map view</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-16T00:07:25">May 16, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-16T01:47:42">May 16, 2025</a>.</div>
 </footer>
 </div>

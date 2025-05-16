@@ -1,19 +1,35 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Contribute data | Global plastics tracker</title>
+<title>Contribute data &amp; feedback | Global plastics tracker</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="preload" as="style" href="./_observablehq/stdlib/inputs.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
+<link rel="modulepreload" href="./_npm/htl@0.3.1/_esm.js">
+<link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
 <link rel="icon" href="./_file/data/csdr.bdd05e74.png" type="image/png" sizes="32x32">
 <script type="module">
 
-import "./_observablehq/client.js";
+import {define} from "./_observablehq/client.js";
+
+define({id: "e7827b74", inputs: ["view","Inputs"], outputs: ["selectCountry","downloadTemplate"], body: (view,Inputs) => {
+const selectCountry = view(Inputs.select(["Coming soon...", "...", "..."]))
+const downloadTemplate = view(Inputs.button("Download country template (coming soon...)"))
+return {selectCountry,downloadTemplate};
+}});
+
+define({id: "30be42f2", inputs: ["view","Inputs"], outputs: ["uploadedTemplate"], body: (view,Inputs) => {
+const uploadedTemplate = view(Inputs.file())
+return {uploadedTemplate};
+}});
 
 </script>
 <input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
@@ -28,20 +44,36 @@ import "./_observablehq/client.js";
     <li class="observablehq-link"><a href="./2_tables">Table view</a></li>
     <li class="observablehq-link"><a href="./3_map">Map view</a></li>
     <li class="observablehq-link"><a href="./4_resources">Resources</a></li>
-    <li class="observablehq-link observablehq-link-active"><a href="./5_contribute">Contribute data</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./5_contribute">Contribute data &amp; feedback</a></li>
   </ol>
 </nav>
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
 <aside id="observablehq-toc" data-selector="h1:not(:first-of-type), h2:first-child, :not(h1) + h2">
 <nav>
+<div>Contents</div>
+<ol>
+<li class="observablehq-secondary-link"><a href="#contribute-country-specific-data">Contribute country specific data</a></li>
+<li class="observablehq-secondary-link"><a href="#upload-the-new-data">Upload the new data</a></li>
+<li class="observablehq-secondary-link"><a href="#get-in-contact">Get in contact</a></li>
+</ol>
 </nav>
 </aside>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
-<h1 id="contribute-data" tabindex="-1"><a class="observablehq-header-anchor" href="#contribute-data">Contribute data</a></h1>
+<h1 id="contribute-data-%26-feedback" tabindex="-1"><a class="observablehq-header-anchor" href="#contribute-data-%26-feedback">Contribute data &amp; feedback</a></h1>
+<p>Something about the project still evolving + needing help to fill in missing data</p>
+<h2 id="contribute-country-specific-data" tabindex="-1"><a class="observablehq-header-anchor" href="#contribute-country-specific-data">Contribute country specific data</a></h2>
+<p>Some way to download a countries current data in a tempalte ready to fill in with some info about data standard etc.</p>
+<div id="cell-e7827b74" class="observablehq observablehq--block"></div>
+<h2 id="upload-the-new-data" tabindex="-1"><a class="observablehq-header-anchor" href="#upload-the-new-data">Upload the new data</a></h2>
+<p>Some way to upload the data back.<br>
+Coming soon...</p>
+<div id="cell-30be42f2" class="observablehq observablehq--block"></div>
+<h2 id="get-in-contact" tabindex="-1"><a class="observablehq-header-anchor" href="#get-in-contact">Get in contact</a></h2>
+<p>SOmething about just getting in contact and givign feedback/data in other ways etc.</p>
 </main>
 <footer id="observablehq-footer">
 <nav><a rel="prev" href="./4_resources"><span>Resources</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-16T00:07:25">May 16, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-16T01:47:42">May 16, 2025</a>.</div>
 </footer>
 </div>
