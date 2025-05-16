@@ -1,11 +1,31 @@
 # Table view
 
-
 ```js
 // load the plastics data
 const plastics_ratings_raw = FileAttachment("data/global_plastics_waste_data_ratings_current.csv").csv({typed: true});
 // load the corresponding links data
 const plastics_links_raw = FileAttachment("data/global_plastics_waste_data_links_current.csv").csv({typed: false}); // URLs are strings
+```
+
+```js
+const valueColorMap = {
+  0: "#D3D3D3", 1: "#FFDAB9", 2: "#FFD8B1",
+  3: "#FFFFE0", 4: "#98FB98", 5: "#008000"
+};
+
+const scoreLegend = htl.html`<div class="color-legend-wrapper">
+  <div class="color-legend">
+    <strong class="legend-title">Data score colour coding:</strong>
+    ${Object.entries(valueColorMap)
+      .sort(([scoreA], [scoreB]) => parseInt(scoreA) - parseInt(scoreB)) // Sort scores numerically
+      .map(([score, color]) => htl.html`
+      <div class="legend-item">
+        <span class="legend-swatch" style="background-color: ${color};"></span>
+        <span class="legend-label">${score}</span>
+      </div>
+    `)}
+  </div>
+</div>`;
 ```
 
 ```js
@@ -36,11 +56,6 @@ const plastics_ratings_all_rows = plastics_ratings_raw.map((d) => ({
 const tableSearch = Inputs.search(plastics_ratings_all_rows, {placeholder: "Search table..."});
 const tableSearchValue = view(tableSearch); // This filtered/sorted array is passed to Inputs.table
 
-// Configurations for Cell Styling and Linking
-const valueColorMap = {
-  0: "#D3D3D3", 1: "#FFDAB9", 2: "#FFD8B1",
-  3: "#FFFFE0", 4: "#98FB98", 5: "#008000"
-};
 
 // Column names that will be colored and should get links.
 // These names must match the keys in plastics_ratings_all_rows objects
@@ -171,21 +186,69 @@ if (plastics_ratings_all_rows.length > 0 && plastics_links_raw && plastics_links
 } else {
   console.warn("Block 4: plastics_ratings_all_rows or plastics_links_raw is empty. No table cell formats created or links will be missing.");
 }
+```
 
-const finalTable = Inputs.table(tableSearchValue, { // tableSearchValue is the filtered/sorted data
+```js
+const finalTable = view(Inputs.table(tableSearchValue, { // tableSearchValue is the filtered/sorted data
   rows: 15,
   columns: selectedColumns,
   format: tableCellFormats,
   width: "100%"
-});
+}));
 ```
 
-<div class="card">
-    <h2>Plastics register</h2>
-    ${finalTable}
-</div>
+${scoreLegend}
+
+```js
+const downloadButton = view(Inputs.button("Download the data (coming soon...)"))
+```
 
 
 
+<style>
+  /* Add these styles to your existing <style> block or create a new one */
+
+  .color-legend-wrapper {
+    margin-bottom: 1.5rem; /* Space below the legend, before the table controls/table */
+    /* max-width: 700px; /* Optional: constrain width of legend container */
+  }
+
+  .color-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem; /* Vertical gap, Horizontal gap between items */
+    font-family: var(--sans-serif, system-ui, sans-serif);
+    font-size: 0.9em;
+    padding: 0.75rem 1rem;
+    background-color: var(--theme-background-alt);
+    border: 1px solid var(--theme-background);
+    border-radius: var(--theme-radius, 4px);
+  }
+
+  .legend-title {
+    font-weight: 600;
+    margin-right: 0.5rem;
+    color: var(--theme-foreground);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4em; /* Space between swatch and label */
+  }
+
+  .legend-swatch {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--theme-foreground-faint, #bbb); /* Border for light swatches */
+    border-radius: 3px;
+  }
+
+  .legend-label {
+    color: var(--theme-foreground-muted, #333);
+  }
+</style>
 
 <div class="small note">The Global Plastics Data tracker provides easy access to the sources of individual data points for each country, across the whole supply-chain.  The Tracker refers only to Government published data and statistics for all aspects of the supply-chain. Each data point has been assigned a “Data score” which indicates how suitable the data is for informing annual flows of plastic in the country. The highest data scores are assigned to the data points that report plastic-specific data and are reported annually. Lower data scores are given to data points that do not publish plastic-specific data, and/or have published data infrequently.<br>The tracker was developed via a rapid assessment in the run up to INC-5 - the analysts therefore welcome users to improve the sources and provide feedback. <br>Each rating has a link to the original source of information. For feedback, updates or help, please email <a href="mailto:helena.dickinson@unsw.edu.au">Helena Dickinson</a> or <a href="mailto:e.northrop@unsw.edu.au">Eliza Northrop</a>.
