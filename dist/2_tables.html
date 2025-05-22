@@ -55,38 +55,11 @@ const scoreLegend = htl.html`<div class="color-legend-wrapper">
 return {valueColorMap,scoreLegend};
 }});
 
-define({id: "b771a423", inputs: ["plastics_ratings_raw","Inputs","view","plastics_links_raw"], outputs: ["plastics_ratings_all_rows","tableSearch","tableSearchValue","numericColumnsToColorAndLink"], body: (plastics_ratings_raw,Inputs,view,plastics_links_raw) => {
-// This is the full, mapped array of all rating objects from your CSV.
-// It will be used to find the original index of rows shown in the filtered table.
-const plastics_ratings_all_rows = plastics_ratings_raw.map((d) => ({
-  "Country": d["Country"], // Crucial: Ensure this key matches your CSV header for country
-  "Region": d["Region"],
-  "Type": d["Type"],
-  "Domestic primary material": +d["Domestic primary material"],
-  "Domestic Products": +d["Domestic Products"],
-  "Virgin content consumption": +d["Virgin content consumption"],
-  "Recycled content consumption": +d["Recycled content consumption"],
-  "Primary material trade (imports)": +d["Primary material trade (imports)"],
-  "Primary material trade (exports)": +d["Primary material trade (exports)"],
-  "Products (imports)": +d["Products (imports)"],
-  "Products (exports)": +d["Products (exports)"],
-  "Total generated plastic waste": +d["Total generated plastic waste"],
-  "Waste recovered for recycling": +d["Waste recovered for recycling"],
-  "Waste to Energy": +d["Waste to Energy"],
-  "Waste Incinerated (without energy recovery)": +d["Waste Incinerated (without energy recovery)"],
-  "Waste landfilled": +d["Waste landfilled"],
-  "Waste (import)": +d["Waste (import)"],
-  "Waste (Export)": +d["Waste (Export)"]
-}));
-
-// Create search input using the full ratings data
-const tableSearch = Inputs.search(plastics_ratings_all_rows, {placeholder: "Search table..."});
-const tableSearchValue = view(tableSearch); // This filtered/sorted array is passed to Inputs.table
-
-
+define({id: "9313c74f", inputs: ["plastics_ratings_raw","plastics_links_raw","Inputs","view"], outputs: ["numericColumnsToColorAndLink","plastics_ratings_all_rows","tableSearch","tableSearchValue"], body: (plastics_ratings_raw,plastics_links_raw,Inputs,view) => {
 // Column names that will be colored and should get links.
 // These names must match the keys in plastics_ratings_all_rows objects
 // AND the column headers in your links CSV.
+// THIS DEFINITION MUST COME BEFORE plastics_ratings_all_rows if used inside its .map()
 const numericColumnsToColorAndLink = [
   "Domestic primary material", "Domestic Products", "Virgin content consumption",
   "Recycled content consumption", "Primary material trade (imports)",
@@ -96,28 +69,119 @@ const numericColumnsToColorAndLink = [
   "Waste (import)", "Waste (Export)"
 ];
 
-// DEBUG: Verify plastics_links_raw structure (optional, but good for a first run)
-if (plastics_links_raw && plastics_links_raw.length > 0) {
-    console.log("BLOCK 2 DEBUG: First row of plastics_links_raw:", JSON.parse(JSON.stringify(plastics_links_raw[0])));
-    console.log(`BLOCK 2 DEBUG: plastics_links_raw has ${plastics_links_raw.length} rows. plastics_ratings_all_rows has ${plastics_ratings_all_rows.length} rows.`);
-    if (plastics_ratings_all_rows.length !== plastics_links_raw.length) {
-        console.warn("WARNING: Row count mismatch between ratings data and links data!");
+// Create a new dataset where linkable cells contain both their value and URL
+const plastics_ratings_all_rows = plastics_ratings_raw.map((raw_rating_row, index) => {
+  const processed_row = { __originalIndex: index }; // Keep original index for reference if needed elsewhere
+
+  // First, copy and correctly type all data from the raw ratings row
+  for (const key in raw_rating_row) {
+    if (raw_rating_row.hasOwnProperty(key)) {
+      if (key === "Country" || key === "Region" || key === "Type") {
+        processed_row[key] = raw_rating_row[key]; // These are strings
+      } else {
+        // For other columns, attempt to convert to number.
+        // FileAttachment csv({typed: true}) should handle this, but this ensures it.
+        const numVal = Number(raw_rating_row[key]);
+        // Check if it's a valid number and not from an empty string (which Number() converts to 0)
+        if (!isNaN(numVal) && String(raw_rating_row[key]).trim() !== "") {
+            processed_row[key] = numVal;
+        } else {
+            processed_row[key] = raw_rating_row[key]; // Keep as original if not a clear number
+        }
+      }
     }
-} else {
-    console.warn("BLOCK 2 DEBUG: plastics_links_raw is empty or undefined.");
+  }
+
+  // Now, for columns that need linking, transform their value into an object: {value, url}
+  // This relies on plastics_links_raw having the same number of rows and corresponding columns.
+  if (plastics_links_raw && index < plastics_links_raw.length) {
+    const link_data_for_row = plastics_links_raw[index]; // Get the corresponding row from the links table
+    for (const colName of numericColumnsToColorAndLink) {
+      if (processed_row.hasOwnProperty(colName)) { // Check if the column exists in our processed_row
+        const currentValue = processed_row[colName]; // This is the rating value
+        let urlValue = null;
+        if (link_data_for_row && link_data_for_row.hasOwnProperty(colName)) {
+          urlValue = String(link_data_for_row[colName]).trim();
+        }
+        processed_row[colName] = { value: currentValue, url: urlValue };
+      }
+      // If processed_row doesn't have colName, it means numericColumnsToColorAndLink might list
+      // a column not present in plastics_ratings_raw CSV.
+    }
+  } else {
+    // This case handles if plastics_links_raw is missing or shorter than plastics_ratings_raw.
+    // All linkable columns for this row will have their URL set to null.
+    for (const colName of numericColumnsToColorAndLink) {
+      if (processed_row.hasOwnProperty(colName)) {
+        processed_row[colName] = { value: processed_row[colName], url: null };
+      }
+    }
+  }
+  return processed_row;
+});
+
+// DEBUG: Verify the new structure of plastics_ratings_all_rows
+if (plastics_ratings_all_rows.length > 0) {
+    console.log("DEBUG Block 3: First row of processed plastics_ratings_all_rows (check for {value, url} objects):", JSON.parse(JSON.stringify(plastics_ratings_all_rows[0])));
+    // Check a specific linkable column in the first row
+    if (numericColumnsToColorAndLink.length > 0 && plastics_ratings_all_rows[0].hasOwnProperty(numericColumnsToColorAndLink[0])) {
+        console.log(`DEBUG Block 3: Content of first linkable column ('${numericColumnsToColorAndLink[0]}') in first row:`, JSON.parse(JSON.stringify(plastics_ratings_all_rows[0][numericColumnsToColorAndLink[0]])));
+    }
 }
-return {plastics_ratings_all_rows,tableSearch,tableSearchValue,numericColumnsToColorAndLink};
+if (!plastics_links_raw || plastics_links_raw.length === 0) {
+    console.warn("WARNING Block 3: plastics_links_raw is empty or not loaded. URLs will be missing.");
+}
+
+
+// Create search input using the processed data.
+// Inputs.search will try to stringify the {value, url} objects for searching.
+// This might affect search quality for those columns.
+// For robust search, you might need to provide a custom 'format' function to Inputs.search
+// that extracts searchable text, e.g., only from the 'value' part or 'Country', 'Region'.
+const tableSearch = Inputs.search(plastics_ratings_all_rows, {
+    placeholder: "Search table...",
+    // Example of a custom format function for search, if needed:
+    // format: (d) => {
+    //   let searchText = `${d.Country || ""} ${d.Region || ""} ${d.Type || ""}`;
+    //   numericColumnsToColorAndLink.forEach(col => {
+    //     if (d[col] && typeof d[col] === 'object' && d[col].hasOwnProperty('value')) {
+    //       searchText += ` ${d[col].value}`;
+    //     } else if (d[col]) {
+    //       searchText += ` ${d[col]}`;
+    //     }
+    //   });
+    //   return searchText;
+    // }
+});
+const tableSearchValue = view(tableSearch);
+
+// Your existing debug logs for plastics_links_raw and row counts can remain if you find them useful.
+// Make sure they are placed after the relevant variables are defined.
+if (plastics_links_raw && plastics_links_raw.length > 0 && plastics_ratings_all_rows.length > 0) {
+    if (plastics_ratings_all_rows.length !== plastics_links_raw.length) {
+        console.warn("WARNING Block 3: Row count mismatch between ratings data and links data!");
+    }
+}
+return {numericColumnsToColorAndLink,plastics_ratings_all_rows,tableSearch,tableSearchValue};
 }});
 
-define({id: "abb22477", inputs: ["plastics_ratings_all_rows","view","Inputs"], outputs: ["colNames","startList","selectedColumns"], body: (plastics_ratings_all_rows,view,Inputs) => {
+define({id: "330e3e3f", inputs: ["plastics_ratings_all_rows","view","Inputs"], outputs: ["colNames","startList","filteredStartList","selectedColumns"], body: (plastics_ratings_all_rows,view,Inputs) => {
 // create column toggle list
-const colNames = Object.keys(plastics_ratings_all_rows[0])
-const startList = ["Country", "Domestic primary material", "Domestic Products", "Primary material trade (imports)", "Primary material trade (exports)", "Total generated plastic waste"]
+// Filter out the internal __originalIndex from the list of column names available for selection
+const colNames = plastics_ratings_all_rows.length > 0
+    ? Object.keys(plastics_ratings_all_rows[0]).filter(key => key !== "__originalIndex")
+    : [];
+
+const startList = ["Country", "Domestic primary material", "Domestic Products", "Primary material trade (imports)", "Primary material trade (exports)", "Total generated plastic waste"];
+// Ensure startList doesn't contain __originalIndex (it shouldn't by default, but good for robustness)
+const filteredStartList = startList.filter(key => key !== "__originalIndex");
+
 const selectedColumns = view(Inputs.checkbox(colNames, {
   label: "Columns to display",
-  value: startList,
-  multiple: true}))
-return {colNames,startList,selectedColumns};
+  value: filteredStartList, // Use the filtered list
+  multiple: true
+}));
+return {colNames,startList,filteredStartList,selectedColumns};
 }});
 
 define({id: "e10780b0", body: () => {
@@ -129,9 +193,10 @@ define({id: "e10780b0", body: () => {
 //</div>
 }});
 
-define({id: "05498177", inputs: ["plastics_ratings_all_rows","plastics_links_raw","numericColumnsToColorAndLink","valueColorMap"], outputs: ["createStyledCell","tableCellFormats"], body: (plastics_ratings_all_rows,plastics_links_raw,numericColumnsToColorAndLink,valueColorMap) => {
+define({id: "4da3a9a8", inputs: ["plastics_ratings_all_rows","numericColumnsToColorAndLink","valueColorMap"], outputs: ["createStyledCell","tableCellFormats"], body: (plastics_ratings_all_rows,numericColumnsToColorAndLink,valueColorMap) => {
 // --- Table Cell Formatting Logic ---
 
+// Helper function to create a styled span for cell content (this function remains the same)
 function createStyledCell(value, {backgroundColor = 'transparent', textAlign = 'left', padding = '5px 8px'} = {}) {
   const span = document.createElement("span");
   span.style.backgroundColor = backgroundColor;
@@ -149,73 +214,88 @@ function createStyledCell(value, {backgroundColor = 'transparent', textAlign = '
 }
 
 const tableCellFormats = {};
-// Ensure plastics_ratings_all_rows is used for checks if plastics_links_raw is also checked against its length
-if (plastics_ratings_all_rows.length > 0 && plastics_links_raw && plastics_links_raw.length > 0) {
-  const allColumnNamesFromData = Object.keys(plastics_ratings_all_rows[0]);
-  const firstRatingRow = plastics_ratings_all_rows[0]; // To check data types for non-linkable numeric cols
 
-  // Optional: You can re-add the column name matching diagnostics here if still needed
+// Ensure plastics_ratings_all_rows is populated before trying to get keys from it
+if (plastics_ratings_all_rows && plastics_ratings_all_rows.length > 0) {
+  // Get all column names from the data, excluding our internal __originalIndex if you kept it.
+  // The column names themselves haven't changed.
+  const allColumnNamesFromData = Object.keys(plastics_ratings_all_rows[0]).filter(key => key !== "__originalIndex");
+  const firstProcessedRow = plastics_ratings_all_rows[0]; // Used to infer types for non-linkable numeric cols
 
   for (const colName of allColumnNamesFromData) {
     if (numericColumnsToColorAndLink.includes(colName)) {
-      tableCellFormats[colName] = (cellValue, i_filtered, rowData_filtered) => {
-        // Step 1: Create the styled span (rating number with background)
-        let styledContentSpan;
-        if (typeof cellValue === 'number' && valueColorMap[cellValue] !== undefined) {
-          styledContentSpan = createStyledCell(cellValue, {backgroundColor: valueColorMap[cellValue], textAlign: 'center'});
-        } else if (typeof cellValue === 'number') {
-          styledContentSpan = createStyledCell(cellValue, {textAlign: 'center'});
+      // This formatter is for columns that are now {value, url} objects
+      tableCellFormats[colName] = (cellData_obj, i_filtered, rowData_filtered) => {
+        // cellData_obj is expected to be { value: rating_value, url: "string_url_or_null" }
+
+        let ratingValue_to_display;
+        let url_for_link = null;
+
+        if (typeof cellData_obj === 'object' && cellData_obj !== null && cellData_obj.hasOwnProperty('value')) {
+          ratingValue_to_display = cellData_obj.value;
+          url_for_link = cellData_obj.url;
         } else {
-          styledContentSpan = createStyledCell(String(cellValue), {textAlign: 'left'});
-        }
-
-        // Step 2: Find the original index of this rowData_filtered in plastics_ratings_all_rows
-        const originalRowIndex = plastics_ratings_all_rows.findIndex(originalRow => originalRow === rowData_filtered);
-
-        let url = null;
-        if (originalRowIndex !== -1) {
-          // Check if the corresponding row and column exist in plastics_links_raw
-          const linkRow = plastics_links_raw[originalRowIndex];
-          if (linkRow && linkRow.hasOwnProperty(colName)) {
-            url = String(linkRow[colName]).trim();
-          } else if (i_filtered < 2 && colName === numericColumnsToColorAndLink[0]) { // Log for first few cells of first linkable column
-            console.warn(`Link lookup: For original index ${originalRowIndex}, column '${colName}' not found or linkRow missing in plastics_links_raw. LinkRow:`, linkRow);
+          // Fallback: If cellData_obj is not the expected object.
+          // This might happen if there was an error in data processing,
+          // or if a column was mistakenly added to numericColumnsToColorAndLink.
+          ratingValue_to_display = cellData_obj; // Display whatever we got
+          if (i_filtered < 1) { // Log once per column rendering to avoid spam
+            console.warn(`Formatter for '${colName}': Expected cellData_obj to be {value, url}, but received:`, cellData_obj, "Row data:", rowData_filtered);
           }
-        } else if (i_filtered < 2 && colName === numericColumnsToColorAndLink[0]) {
-            console.warn(`Link lookup: Could not find original index for rowData:`, rowData_filtered);
         }
 
-        // Step 3: If URL is valid, create anchor tag
-        if (url && url !== "" && (url.startsWith('http://') || url.startsWith('https://'))) {
+        // Create the styled span for the rating value
+        let styledContentSpan;
+        if (typeof ratingValue_to_display === 'number' && valueColorMap[ratingValue_to_display] !== undefined) {
+          styledContentSpan = createStyledCell(ratingValue_to_display, {backgroundColor: valueColorMap[ratingValue_to_display], textAlign: 'center'});
+        } else if (typeof ratingValue_to_display === 'number') {
+          styledContentSpan = createStyledCell(ratingValue_to_display, {textAlign: 'center'});
+        } else {
+          // Handle cases like null, undefined, or non-numeric rating values gracefully
+          styledContentSpan = createStyledCell(String(ratingValue_to_display !== undefined && ratingValue_to_display !== null ? ratingValue_to_display : "N/A"), {textAlign: 'left'});
+        }
+
+        // If a valid URL exists, create an anchor tag
+        if (url_for_link && url_for_link !== "" && (url_for_link.startsWith('http://') || url_for_link.startsWith('https://'))) {
           const anchor = document.createElement('a');
-          anchor.href = url;
+          anchor.href = url_for_link;
           anchor.target = "_blank";
           anchor.rel = "noopener noreferrer";
-          anchor.style.display = "block"; 
+          anchor.style.display = "block";
           anchor.style.textDecoration = "none";
-          anchor.style.color = "inherit"; 
+          anchor.style.color = "inherit"; // Link color inherits from the span
           anchor.appendChild(styledContentSpan);
           return anchor;
         } else {
-          // If URL is invalid or not found, log it for first few relevant cells.
-          if (url && url !== "" && i_filtered < 2 && colName === numericColumnsToColorAndLink[0]) {
-              console.warn(`Invalid URL format for original index ${originalRowIndex}, col '${colName}': '${url}'`);
-          }
-          return styledContentSpan; // Return just the styled number
+          // If URL is invalid, empty, or null, return just the styled rating value
+          return styledContentSpan;
         }
       };
-    } else if (typeof firstRatingRow[colName] === 'number') {
-      // For other numeric columns not in numericColumnsToColorAndLink
+    } else if (firstProcessedRow && typeof firstProcessedRow[colName] === 'number') {
+      // For other numeric columns (not in numericColumnsToColorAndLink) that are plain numbers
       tableCellFormats[colName] = (cellValue) => createStyledCell(cellValue, {textAlign: 'right'});
     } else {
-      // For text columns like "Country", "Region", "Type"
-      tableCellFormats[colName] = (cellValue) => createStyledCell(cellValue, {textAlign: 'left'});
+      // For general text columns (e.g., "Country", "Region", "Type") or any other plain values
+      tableCellFormats[colName] = (cellValue) => {
+         // Guard against an unexpected object here, though ideally it shouldn't happen for these columns.
+        if (typeof cellValue === 'object' && cellValue !== null && cellValue.hasOwnProperty('value')) {
+           console.warn(`Formatter for non-linkable column '${colName}' received an unexpected object:`, cellValue);
+           return createStyledCell(String(cellValue.value), {textAlign: 'left'});
+        }
+        return createStyledCell(String(cellValue !== undefined && cellValue !== null ? cellValue : ""), {textAlign: 'left'});
+      };
     }
   }
 } else {
-  console.warn("Block 4: plastics_ratings_all_rows or plastics_links_raw is empty. No table cell formats created or links will be missing.");
+  console.warn("Cell Formatting Block: plastics_ratings_all_rows is empty. Table cell formats cannot be created.");
 }
 return {createStyledCell,tableCellFormats};
+}});
+
+define({id: "340c6cae", inline: true, inputs: ["scoreLegend","display"], body: async (scoreLegend,display) => {
+display(await(
+scoreLegend
+))
 }});
 
 define({id: "d2bb0119", inputs: ["view","Inputs","tableSearchValue","selectedColumns","tableCellFormats"], outputs: ["finalTable"], body: (view,Inputs,tableSearchValue,selectedColumns,tableCellFormats) => {
@@ -226,17 +306,6 @@ const finalTable = view(Inputs.table(tableSearchValue, { // tableSearchValue is 
   width: "100%"
 }));
 return {finalTable};
-}});
-
-define({id: "340c6cae", inline: true, inputs: ["scoreLegend","display"], body: async (scoreLegend,display) => {
-display(await(
-scoreLegend
-))
-}});
-
-define({id: "b93f214c", inputs: ["view","Inputs"], outputs: ["downloadButton"], body: (view,Inputs) => {
-const downloadButton = view(Inputs.button("Download the data (coming soon...)"))
-return {downloadButton};
 }});
 
 </script>
@@ -265,13 +334,15 @@ return {downloadButton};
 <h1 id="table-view" tabindex="-1"><a class="observablehq-header-anchor" href="#table-view">Table view</a></h1>
 <div id="cell-b78fd37c" class="observablehq observablehq--block"></div>
 <div id="cell-a88ccfbb" class="observablehq observablehq--block"></div>
-<div id="cell-b771a423" class="observablehq observablehq--block"></div>
-<div id="cell-abb22477" class="observablehq observablehq--block"></div>
+<div id="cell-9313c74f" class="observablehq observablehq--block"></div>
+<div id="cell-330e3e3f" class="observablehq observablehq--block"></div>
 <div id="cell-e10780b0" class="observablehq observablehq--block"></div>
-<div id="cell-05498177" class="observablehq observablehq--block"></div>
-<div id="cell-d2bb0119" class="observablehq observablehq--block"></div>
+<div id="cell-4da3a9a8" class="observablehq observablehq--block"></div>
 <p><span id="cell-340c6cae" class="observablehq--loading"></span></p>
-<div id="cell-b93f214c" class="observablehq observablehq--block"></div>
+<div id="cell-d2bb0119" class="observablehq observablehq--block"></div>
+<p>You can click any table entry with a rating &gt;0 in the table to visit the original data source.</p>
+<p>You can also download all of the data rating as a <a href="./data/global_plastics_waste_data_ratings_current.csv">.csv file</a>, or download your filtered selection below (<em>coming soon...</em>).</p>
+<p><button id="downloadButton">Download File (coming soon...)</button></p>
 <style>
   /* Add these styles to your existing <style> block or create a new one */
 
@@ -317,9 +388,13 @@ return {downloadButton};
     color: var(--theme-foreground-muted, #333);
   }
 </style>
-<div class="small note">The Global Plastics Data tracker provides easy access to the sources of individual data points for each country, across the whole supply-chain.  The Tracker refers only to Government published data and statistics for all aspects of the supply-chain. Each data point has been assigned a “Data score” which indicates how suitable the data is for informing annual flows of plastic in the country. The highest data scores are assigned to the data points that report plastic-specific data and are reported annually. Lower data scores are given to data points that do not publish plastic-specific data, and/or have published data infrequently.<br>The tracker was developed via a rapid assessment in the run up to INC-5 - the analysts therefore welcome users to improve the sources and provide feedback. <br>Each rating has a link to the original source of information. For feedback, updates or help, please email <a href="mailto:helena.dickinson@unsw.edu.au" target="_blank" rel="noopener noreferrer">Helena Dickinson</a> or <a href="mailto:e.northrop@unsw.edu.au" target="_blank" rel="noopener noreferrer">Eliza Northrop</a>.</div></main>
+<div class="small note">
+Our team welcomes feedback to improve this tool for policymakers, researchers, and stakeholders. For feedback, updates or help, please explore our website or email
+<a href="mailto:helena.dickinson@unsw.edu.au" target="_blank" rel="noopener noreferrer">Helena Dickinson</a>
+or
+<a href="mailto:e.northrop@unsw.edu.au" target="_blank" rel="noopener noreferrer">Eliza Northrop</a>.</div></main>
 <footer id="observablehq-footer">
 <nav><a rel="prev" href="./1_about"><span>About</span></a><a rel="next" href="./3_map"><span>Map view</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-16T01:47:42">May 16, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-22T06:45:23">May 22, 2025</a>.</div>
 </footer>
 </div>
