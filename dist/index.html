@@ -109,9 +109,10 @@ function formatPercentage(value, fractionDigits = 1) {
 return {ratingsDataRaw,plasticCategories,reportedCountriesData,numReportedCountries,worldCountryTotal,percReported,countAllZeros,percAllZeros,countOneOrMoreHighRating,percOneOrMoreHighRating,countAverageOrMoreHighRating,percAverageOrMoreHighRating,formatPercentage};
 }});
 
-define({id: "a46dff0d", inputs: ["html","formatPercentage","percReported","numReportedCountries","percAllZeros","percAverageOrMoreHighRating","FileAttachment"], outputs: ["statsCardContent","aboutCardContent","mapImageLink"], body: async (html,formatPercentage,percReported,numReportedCountries,percAllZeros,percAverageOrMoreHighRating,FileAttachment) => {
+define({id: "19b57b75", inputs: ["html","formatPercentage","percReported","numReportedCountries","percAllZeros","percAverageOrMoreHighRating","FileAttachment"], outputs: ["statsCardContent","aboutCardContent","contributeCardContent","mapImageLink"], body: async (html,formatPercentage,percReported,numReportedCountries,percAllZeros,percAverageOrMoreHighRating,FileAttachment) => {
 // Content for the Top-Left Stats Card
 const statsCardContent = html`
+  <h2> Key metrics </h2>
   <div class="stat-item">
     <span class="stat-label">Countries covered globally</span>
     <span class="stat-value">${formatPercentage(percReported, 0)} <span class="stat-value-suffix">(${numReportedCountries} countries)</span></span>
@@ -127,14 +128,18 @@ const statsCardContent = html`
     <span class="stat-value">${formatPercentage(percAverageOrMoreHighRating)}</span>
   </div>
   
-  <a href="/1_tables" style="display: inline-block; margin-top: 1.5em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">View Data Tables &raquo;</a>
+  <a href="/1_tables" style="display: inline-block; margin-top: 1.5em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Plastics data registry &raquo;</a>
 `;
 
 // Content for the Bottom-Left About Card
 const aboutCardContent = html`
-  <h2>About This Tool</h2>
+  <h2>Learn more about the tools</h2>
   <p>This tool is a global register for plastic waste data and policies, currently in development.</p>
   <a href="/4_resources" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Discover more plastics resources &raquo;</a>
+`;
+
+const contributeCardContent = html`
+  <h2>Get involved</h2>
   <p>Your contributions can help improve its accuracy and comprehensiveness.</p>
   <a href="/5_contribute" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Learn how to contribute &raquo;</a>
 `;
@@ -147,7 +152,7 @@ const mapImageLink = html`
     <img src="${await FileAttachment("./data/map_placeholder.png").url()}" alt="Global Plastics Map" style="max-width:100%; height:auto; border:1px solid #ddd; margin-top: 1em; border-radius: 4px;" />
   </a>
 `;
-return {statsCardContent,aboutCardContent,mapImageLink};
+return {statsCardContent,aboutCardContent,contributeCardContent,mapImageLink};
 }});
 
 define({id: "37b1d1b2", inline: true, inputs: ["statsCardContent","display"], body: async (statsCardContent,display) => {
@@ -165,6 +170,12 @@ mapImageLink
 define({id: "5f34a580", inline: true, inputs: ["aboutCardContent","display"], body: async (aboutCardContent,display) => {
 display(await(
 aboutCardContent
+))
+}});
+
+define({id: "8fb4abdd", inline: true, inputs: ["contributeCardContent","display"], body: async (contributeCardContent,display) => {
+display(await(
+contributeCardContent
 ))
 }});
 
@@ -187,18 +198,35 @@ aboutCardContent
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
 <aside id="observablehq-toc" data-selector="h1:not(:first-of-type), h2:first-child, :not(h1) + h2">
 <nav>
+<div>Contents</div>
+<ol>
+<li class="observablehq-secondary-link"><a href="#explore-the-plastics-data-register-and-visualisation-tools">Explore the plastics data register and visualisation tools</a></li>
+</ol>
 </nav>
 </aside>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
 <h1 id="global-plastics-tracker" tabindex="-1"><a class="observablehq-header-anchor" href="#global-plastics-tracker">Global plastics tracker</a></h1>
 <div style="margin-top: 2rem; padding: 1rem; background-color: var(--theme-background-alt); border-radius: var(--theme-radius);">
-  <h3>Explore the global plastics register and visualisation tools</h3>
-  <p>Use the navigation pane to the left, or follow the links in the cards below for detailed data tables, interactive maps, and learn how you can contribute to this growing dataset.</p>
-  <a href="/1_about" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Learn more about the register and tools »</a>
+  <p>
+    The Global Plastics Data Tracker monitors plastics reporting across 180+ countries, providing:
+  </p>
+  <ul>
+    <li><strong>Data sources:</strong> Access to government data sources on plastics data across the supply-chain</li>
+    <li><strong>Data scores:</strong> “Data scores” for each source according to reporting frequency and granularity</li>
+    <li><strong>Insight into global progress:</strong> Insight into the countries with the most developed plastics data and an evidence-base for the gaps in global plastics data reporting across the plastics supply-chain</li>
+  </ul>
+  <p>
+    Developed ahead of the Intergovernmental Negotiating Committee’s fifth session (INC-5), this tracker establishes a crucial evidence base that illustrates the current global landscape of plastics data availability. It was specifically designed to inform treaty negotiators about critical gaps and opportunities for improvement in international plastics monitoring frameworks.
+  </p>
+  <p>
+  Our team welcomes feedback to improve this tool for policymakers, researchers, and stakeholders. For feedback, updates or help, please explore our website or email <a href="mailto:helena.dickinson@unsw.edu.au" target="_blank" rel="noopener noreferrer">Helena Dickinson</a> or <a href="mailto:e.northrop@unsw.edu.au" target="_blank" rel="noopener noreferrer">Eliza Northrop</a>.
+  </p>
+<p><a href="/1_about" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Learn more about the register and tools »</a></p>
 </div>
+<h2 id="explore-the-plastics-data-register-and-visualisation-tools" tabindex="-1"><a class="observablehq-header-anchor" href="#explore-the-plastics-data-register-and-visualisation-tools">Explore the plastics data register and visualisation tools</a></h2>
 <div id="cell-1531978b" class="observablehq observablehq--block"></div>
-<div id="cell-a46dff0d" class="observablehq observablehq--block"></div>
+<div id="cell-19b57b75" class="observablehq observablehq--block"></div>
 <style>
   .dashboard-grid {
     display: grid;
@@ -237,12 +265,16 @@ aboutCardContent
       grid-row: 1 / 2;
     }
     .about-card-item { /* Class for the div containing aboutCardContent */
-      grid-column: 1 / 2;
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+    }
+    .contribute-card-item { /* Class for the div containing contributeCardContent */
+      grid-column: 2 / 3;
       grid-row: 2 / 3;
     }
     .map-card-item { /* Class for the div containing mapImageLink */
-      grid-column: 2 / 3;
-      grid-row: 1 / 3; /* Span both rows */
+      grid-column: 1 / 2;
+      grid-row: 2 / 3; /* Span both rows */
       display: flex;
       flex-direction: column;
       /* justify-content: center; */ /* Optional: if you want vertical centering of content */
@@ -303,14 +335,13 @@ aboutCardContent
   <div class="card about-card-item">
     <span id="cell-5f34a580" class="observablehq--loading"></span>
   </div>
+  <div class="card contribute-card-item">
+    <span id="cell-8fb4abdd" class="observablehq--loading"></span>
+  </div>
 </div>
-<div class="small note">
-Our team welcomes feedback to improve this tool for policymakers, researchers, and stakeholders. For feedback, updates or help, please explore our website or email
-<a href="mailto:helena.dickinson@unsw.edu.au" target="_blank" rel="noopener noreferrer">Helena Dickinson</a>
-or
-<a href="mailto:e.northrop@unsw.edu.au" target="_blank" rel="noopener noreferrer">Eliza Northrop</a>.</div></main>
+</main>
 <footer id="observablehq-footer">
 <nav><a rel="next" href="./1_about"><span>About</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-22T06:45:23">May 22, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-22T11:53:06">May 22, 2025</a>.</div>
 </footer>
 </div>

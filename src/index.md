@@ -1,10 +1,25 @@
 # Global plastics tracker
 
 <div style="margin-top: 2rem; padding: 1rem; background-color: var(--theme-background-alt); border-radius: var(--theme-radius);">
-  <h3>Explore the global plastics register and visualisation tools</h3>
-  <p>Use the navigation pane to the left, or follow the links in the cards below for detailed data tables, interactive maps, and learn how you can contribute to this growing dataset.</p>
+  <p>
+    The Global Plastics Data Tracker monitors plastics reporting across 180+ countries, providing:
+  </p>
+  <ul>
+    <li><strong>Data sources:</strong> Access to government data sources on plastics data across the supply-chain</li>
+    <li><strong>Data scores:</strong> “Data scores” for each source according to reporting frequency and granularity</li>
+    <li><strong>Insight into global progress:</strong> Insight into the countries with the most developed plastics data and an evidence-base for the gaps in global plastics data reporting across the plastics supply-chain</li>
+  </ul>
+  <p>
+    Developed ahead of the Intergovernmental Negotiating Committee’s fifth session (INC-5), this tracker establishes a crucial evidence base that illustrates the current global landscape of plastics data availability. It was specifically designed to inform treaty negotiators about critical gaps and opportunities for improvement in international plastics monitoring frameworks.
+  </p>
+  <p>
+  Our team welcomes feedback to improve this tool for policymakers, researchers, and stakeholders. For feedback, updates or help, please explore our website or email <a href="mailto:helena.dickinson@unsw.edu.au">Helena Dickinson</a> or <a href="mailto:e.northrop@unsw.edu.au">Eliza Northrop</a>.
+  </p>
+  
   <a href="/1_about" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Learn more about the register and tools &raquo;</a>
 </div>
+  
+## Explore the plastics data register and visualisation tools
 
 ```js
 // Load the ratings data
@@ -96,6 +111,7 @@ function formatPercentage(value, fractionDigits = 1) {
 ```js
 // Content for the Top-Left Stats Card
 const statsCardContent = html`
+  <h2> Key metrics </h2>
   <div class="stat-item">
     <span class="stat-label">Countries covered globally</span>
     <span class="stat-value">${formatPercentage(percReported, 0)} <span class="stat-value-suffix">(${numReportedCountries} countries)</span></span>
@@ -111,14 +127,18 @@ const statsCardContent = html`
     <span class="stat-value">${formatPercentage(percAverageOrMoreHighRating)}</span>
   </div>
   
-  <a href="/1_tables" style="display: inline-block; margin-top: 1.5em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">View Data Tables &raquo;</a>
+  <a href="/1_tables" style="display: inline-block; margin-top: 1.5em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Plastics data registry &raquo;</a>
 `;
 
 // Content for the Bottom-Left About Card
 const aboutCardContent = html`
-  <h2>About This Tool</h2>
+  <h2>Learn more about the tools</h2>
   <p>This tool is a global register for plastic waste data and policies, currently in development.</p>
   <a href="/4_resources" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Discover more plastics resources &raquo;</a>
+`;
+
+const contributeCardContent = html`
+  <h2>Get involved</h2>
   <p>Your contributions can help improve its accuracy and comprehensiveness.</p>
   <a href="/5_contribute" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Learn how to contribute &raquo;</a>
 `;
@@ -171,12 +191,16 @@ const mapImageLink = html`
       grid-row: 1 / 2;
     }
     .about-card-item { /* Class for the div containing aboutCardContent */
-      grid-column: 1 / 2;
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+    }
+    .contribute-card-item { /* Class for the div containing contributeCardContent */
+      grid-column: 2 / 3;
       grid-row: 2 / 3;
     }
     .map-card-item { /* Class for the div containing mapImageLink */
-      grid-column: 2 / 3;
-      grid-row: 1 / 3; /* Span both rows */
+      grid-column: 1 / 2;
+      grid-row: 2 / 3; /* Span both rows */
       display: flex;
       flex-direction: column;
       /* justify-content: center; */ /* Optional: if you want vertical centering of content */
@@ -239,11 +263,7 @@ const mapImageLink = html`
   <div class="card about-card-item">
     ${aboutCardContent}
   </div>
+  <div class="card contribute-card-item">
+    ${contributeCardContent}
+  </div>
 </div>
-
-
-<div class="small note">
-Our team welcomes feedback to improve this tool for policymakers, researchers, and stakeholders. For feedback, updates or help, please explore our website or email
-<a href="mailto:helena.dickinson@unsw.edu.au">Helena Dickinson</a>
-or
-<a href="mailto:e.northrop@unsw.edu.au">Eliza Northrop</a>.
