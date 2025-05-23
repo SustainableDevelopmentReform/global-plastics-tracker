@@ -109,7 +109,7 @@ function formatPercentage(value, fractionDigits = 1) {
 return {ratingsDataRaw,plasticCategories,reportedCountriesData,numReportedCountries,worldCountryTotal,percReported,countAllZeros,percAllZeros,countOneOrMoreHighRating,percOneOrMoreHighRating,countAverageOrMoreHighRating,percAverageOrMoreHighRating,formatPercentage};
 }});
 
-define({id: "19b57b75", inputs: ["html","formatPercentage","percReported","numReportedCountries","percAllZeros","percAverageOrMoreHighRating","FileAttachment"], outputs: ["statsCardContent","aboutCardContent","contributeCardContent","mapImageLink"], body: async (html,formatPercentage,percReported,numReportedCountries,percAllZeros,percAverageOrMoreHighRating,FileAttachment) => {
+define({id: "7cea90d0", inputs: ["html","formatPercentage","percReported","numReportedCountries","percAllZeros","percAverageOrMoreHighRating","FileAttachment"], outputs: ["statsCardContent","aboutCardContent","contributeCardContent","mapImageLink"], body: async (html,formatPercentage,percReported,numReportedCountries,percAllZeros,percAverageOrMoreHighRating,FileAttachment) => {
 // Content for the Top-Left Stats Card
 const statsCardContent = html`
   <h2> Key metrics </h2>
@@ -128,7 +128,7 @@ const statsCardContent = html`
     <span class="stat-value">${formatPercentage(percAverageOrMoreHighRating)}</span>
   </div>
   
-  <a href="/1_tables" style="display: inline-block; margin-top: 1.5em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Plastics data registry &raquo;</a>
+  <a href="/2_tables" style="display: inline-block; margin-top: 1.5em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Plastics data registry &raquo;</a>
 `;
 
 // Content for the Bottom-Left About Card
@@ -226,7 +226,7 @@ contributeCardContent
 </div>
 <h2 id="explore-the-plastics-data-register-and-visualisation-tools" tabindex="-1"><a class="observablehq-header-anchor" href="#explore-the-plastics-data-register-and-visualisation-tools">Explore the plastics data register and visualisation tools</a></h2>
 <div id="cell-1531978b" class="observablehq observablehq--block"></div>
-<div id="cell-19b57b75" class="observablehq observablehq--block"></div>
+<div id="cell-7cea90d0" class="observablehq observablehq--block"></div>
 <style>
   .dashboard-grid {
     display: grid;
@@ -342,6 +342,6 @@ contributeCardContent
 </main>
 <footer id="observablehq-footer">
 <nav><a rel="next" href="./1_about"><span>About</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-22T11:53:06">May 22, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-05-23T04:40:27">May 23, 2025</a>.</div>
 </footer>
 </div>
