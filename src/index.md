@@ -127,7 +127,7 @@ const statsCardContent = html`
     <span class="stat-value">${formatPercentage(percAverageOrMoreHighRating)}</span>
   </div>
   
-  <a href="/1_tables" style="display: inline-block; margin-top: 1.5em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Plastics data registry &raquo;</a>
+  <a href="/2_tables" style="display: inline-block; margin-top: 1.5em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Plastics data registry &raquo;</a>
 `;
 
 // Content for the Bottom-Left About Card
