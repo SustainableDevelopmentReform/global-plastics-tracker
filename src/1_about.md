@@ -6,7 +6,7 @@
 - [Using the tracker](#using-the-global-plastics-data-tracker)
 - [Key takeaways](#key-takeaways)
 
-Historically, national-level plastics data has not been easily accessible via a single data platform – making it hard for organisations to identify where there are gaps in global reporting of plastics data. The Global Plastics Data tracker addresses this by providing easy access to the sources of individual data points for each country, across the whole supply-chain.  
+Historically national-level plastics data has not been easily accessible via a single data platform – making it hard for organisations to identify where there are gaps in global reporting of plastics data. The Global Plastics Data tracker addresses this by providing easy access to the sources of individual data points for each country, across the whole supply-chain.  
 
 GOAP has developed the Global Plastics Data Tracker to identify the gaps in plastics data reporting, and to identify areas where data reporting is being advanced. This information will help countries understand where progress can be made within jurisdiction, and help countries more easily learn from other jurisdictions, by observing what others are doing to collect and present plastics data. This information will also help non-governmental organisations better target support for countries, help international groups monitor progress and facilitate more detailed analysis on flows of plastic.  
 
