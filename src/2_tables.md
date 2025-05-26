@@ -263,6 +263,7 @@ if (plastics_ratings_all_rows && plastics_ratings_all_rows.length > 0) {
 ```
 
 ${scoreLegend}
+Refer to [the guide on using the tracker](./1_about#using-the-global-plastics-data-tracker) for information about the scores.
 
 ```js
 const finalTable = view(Inputs.table(tableSearchValue, { // tableSearchValue is the filtered/sorted data
