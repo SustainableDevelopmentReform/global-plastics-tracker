@@ -1,4 +1,4 @@
-# Table view
+# Data registry
 
 ```js
 // load the plastics data
@@ -9,7 +9,7 @@ const plastics_links_raw = FileAttachment("data/global_plastics_waste_data_links
 
 ```js
 const valueColorMap = {
-  0: "#D3D3D3", 1: "#FFDAB9", 2: "#FFD8B1",
+  0: "#D3D3D3", 1: "#E67E22 ", 2: "#FFD8B1",
   3: "#FFFFE0", 4: "#98FB98", 5: "#008000"
 };
 
@@ -276,12 +276,22 @@ const finalTable = view(Inputs.table(tableSearchValue, { // tableSearchValue is 
 
 You can click any table entry with a rating >0 in the table to visit the original data source.  
   
-You can also download all of the data rating as a [.csv file](./data/global_plastics_waste_data_ratings_current.csv), or download your filtered selection below (_coming soon..._).  
+You can also download all of the data rating as a [.csv file](https://github.com/SustainableDevelopmentReform/global-plastics-tracker/blob/main/src/data/global_plastics_waste_data_ratings_current.csv), and a new feature _coming soon_ will enable custom filters and selection to be downloaded.  
 
-<button id="downloadButton">Download File (coming soon...)</button>
+<a href="https://github.com/SustainableDevelopmentReform/global-plastics-tracker/blob/main/src/data/global_plastics_waste_data_ratings_current.csv" download="plastic_data.csv">
+<button type=button">Download data</button>
+</a>
 
 <style>
   /* Add these styles to your existing <style> block or create a new one */
+  
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+  :root {
+    --sans-serif: "Roboto", sans-serif;
+  }
+  body, h1, h2, h3, h4, h5, h6 {
+    font-family: var(--sans-serif);
+  }
 
   .color-legend-wrapper {
     margin-bottom: 1.5rem; /* Space below the legend, before the table controls/table */

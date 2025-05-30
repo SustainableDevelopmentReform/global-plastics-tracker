@@ -61,7 +61,7 @@ let selectedFieldCode = fieldCodes[0];
 // Define color stops for the legend
 const colorStops = [
   { value: 0, color: '#D3D3D3' }, // grey
-  { value: 1, color: '#FFDAB9' }, // pastle orange
+  { value: 1, color: '#E67E22 ' }, // pastle orange
   { value: 2, color: '#FFD8B1' }, // peach
   { value: 3, color: '#FFFFE0' }, // pale yellow
   { value: 4, color: '#98FB98' }, // pale green
@@ -208,7 +208,7 @@ function addLegend() {
   naColorBox.style.border = '1px solid #ccc';
   
   const naLabel = document.createElement('div');
-  naLabel.textContent = 'No data';
+  naLabel.textContent = 'Not researched';
   naLabel.style.fontSize = '10px';
   
   naContainer.appendChild(naColorBox);
@@ -242,7 +242,7 @@ function updateMapColors() {
       ['linear'],
       ['get', selectedFieldCode],
       0, '#D3D3D3', // light grey
-      1, '#FFDAB9', // pastel orange
+      1, '#E67E22 ', // pastel orange
       2, '#FFD8B1', // peach
       3, '#FFFFE0', // pale yellow
       4, '#98FB98', // pale green
@@ -344,3 +344,14 @@ Our team welcomes feedback to improve this tool for policymakers, researchers, a
 <a href="mailto:helena.dickinson@unsw.edu.au">Helena Dickinson</a>
 or
 <a href="mailto:e.northrop@unsw.edu.au">Eliza Northrop</a>.
+
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+  :root {
+    --sans-serif: "Roboto", sans-serif;
+  }
+  body, h1, h2, h3, h4, h5, h6 {
+    font-family: var(--sans-serif);
+  }
+</style>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Methods | Global plastics tracker</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight.css">
+<link rel="modulepreload" href="./_observablehq/client.js">
+<link rel="modulepreload" href="./_observablehq/runtime.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="icon" href="./_file/data/csdr.bdd05e74.png" type="image/png" sizes="32x32">
+<script type="module">
+
+import {define} from "./_observablehq/client.js";
+
+define({id: "443950ef", outputs: ["valueColorMap"], body: () => {
+const valueColorMap = {
+  0: "#D3D3D3", // light grey
+  1: "#E67E22 ", // pastel orange
+  2: "#FFD8B1", // peach
+  3: "#FFFFE0", // pale yellow
+  4: "#98FB98", // pale green
+  5: "#008000"  // green
+};
+return {valueColorMap};
+}});
+
+define({id: "f2f89d26", inputs: ["valueColorMap"], body: (valueColorMap) => {
+// This code block should run after the Markdown table is rendered.
+{ // Using a block to keep variables local
+  const tableWrapper = document.querySelector(".data-score-legend-table");
+
+  if (tableWrapper) {
+    const table = tableWrapper.querySelector("table");
+    if (table) {
+      const dataRows = table.querySelectorAll("tbody tr"); // Assumes Markdown generates <thead> and <tbody>
+
+      dataRows.forEach(row => {
+        // "Data score" is the second column, so its index is 1.
+        const scoreCell = row.cells[1]; 
+        
+        if (scoreCell) {
+          const scoreText = scoreCell.textContent.trim();
+          
+          // Handle the "top row" case explicitly
+          const score = parseInt(scoreText, 10);
+
+          if (!isNaN(score) && valueColorMap[score] !== undefined) {
+            const backgroundColor = valueColorMap[score];
+            row.style.backgroundColor = backgroundColor;
+
+            // Adjust text color for better contrast on dark backgrounds
+            let textColor = "black"; // Default text color
+            if (score === 5) { // Dark green background
+              textColor = "white";
+            }
+            // Apply text color to all cells in the row for consistency
+            Array.from(row.cells).forEach(cell => {
+              cell.style.color = textColor;
+            });
+
+          } else {
+            // Fallback for scores not in map or unparseable, ensure default text color
+            Array.from(row.cells).forEach(cell => {
+              cell.style.color = "black";
+            });
+            // console.warn(`Could not parse score or no color defined for score: '${scoreText}' in row:`, row);
+          }
+        }
+      });
+    } else {
+      console.warn("No <table> element found within the '.data-score-legend-table' div.");
+    }
+  } else {
+    console.warn("The wrapper div with class '.data-score-legend-table' was not found. Make sure it exists and the class name is correct.");
+  }
+
+  // This script runs once when the cell executes. If the table content changes
+  // dynamically by other means, this script would need to be re-run or adapted.
+  // For a static Markdown table, this is sufficient.
+}
+}});
+
+</script>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./">Global plastics tracker</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./1_about">About</a></li>
+    <li class="observablehq-link"><a href="./2_tables">Data registry</a></li>
+    <li class="observablehq-link"><a href="./3_map">Map view</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./4_methods">Methods</a></li>
+    <li class="observablehq-link"><a href="./5_contribute">Get involved</a></li>
+    <li class="observablehq-link"><a href="./6_resources">Resources</a></li>
+  </ol>
+</nav>
+<script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<aside id="observablehq-toc" data-selector="h1:not(:first-of-type), h2:first-child, :not(h1) + h2">
+<nav>
+<div>Contents</div>
+<ol>
+<li class="observablehq-secondary-link"><a href="#limitations">Limitations</a></li>
+<li class="observablehq-secondary-link"><a href="#scope">Scope</a></li>
+<li class="observablehq-secondary-link"><a href="#domestic-plastics-production">Domestic Plastics Production</a></li>
+<li class="observablehq-secondary-link"><a href="#trade-data">Trade data</a></li>
+</ol>
+</nav>
+</aside>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<h1 id="methods" tabindex="-1"><a class="observablehq-header-anchor" href="#methods">Methods</a></h1>
+<p>Each data point has been assigned a “Data score” which indicates how suitable the data point is for informing annual flows of plastic in the country. The highest data score is assigned to the data points that report plastic-specific data and are reported annually. Lower data scores are given to data points that do not refer to plastic-specific data, and/or data that is published infrequently, and/or only for certain regions/provinces/states in the country.</p>
+<p>A full breakdown of the data score descriptions is listed below.</p>
+<div id="cell-443950ef" class="observablehq observablehq--block"></div>
+<div class="data-score-legend-table">
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Data score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>All categories:</em> Data published annually (split by plastics)</td>
+<td>5</td>
+</tr>
+<tr>
+<td><em>All categories:</em> Irregular publication of data (split by plastics)<br><em>Consumption only:</em> Plastics production data not split by virgin/recycled content</td>
+<td>4</td>
+</tr>
+<tr>
+<td><em>All categories:</em> Data published annually (not split by plastics)<br><em>All categories:</em> Data not published since the end of 2018, but was previously published annually (split by plastics)</td>
+<td>3</td>
+</tr>
+<tr>
+<td><em>All categories:</em> Irregular publication of data (not split by plastics)<br><em>All categories:</em> One off publication (split by plastics)<br><em>All categories:</em> Plastics data published annually, but not provided in tonnage format</td>
+<td>2</td>
+</tr>
+<tr>
+<td><em>All categories:</em> One off publication (composition only)<br><em>All categories:</em> One off publication (not split by plastics)<br><em>All categories:</em> One off regional publication</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Not found (<em>no score</em>)</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="cell-f2f89d26" class="observablehq observablehq--block"></div>
+<h2 id="limitations" tabindex="-1"><a class="observablehq-header-anchor" href="#limitations">Limitations</a></h2>
+<p>Whilst using search strings, only the first two pages of the search engine (Google) were reviewed. If a data source was not found on the first two pages, the data point was assigned “not found”. This does not mean the data is not available, only that it was not found during our search.</p>
+<p>A reason for this may be due to language differences – all of our searches used English phrases, but where countries do not translate their websites to English, the sources may not have been picked up. In addition, some countries may collect data, but not report it.</p>
+<p>For primary plastics production specifically, some countries may not report this data because they do not produce primary plastics in their country.</p>
+<h2 id="scope" tabindex="-1"><a class="observablehq-header-anchor" href="#scope">Scope</a></h2>
+<p>Only government published data has been captured in the tracker. There are therefore a number of plastic-related publications that might be helpful for countries to develop plastic accounts (plastics data that follows a standardised collection methodology and is reproducible periodically), that have not been included in this iteration of the tracker. These included publications by IUCN, the UN, the European union, SPREP, SEEA, academic organisations and other consultancy organisations.</p>
+<p>In order for data to be captured in the tracker, it needs to have met at least one of the following criteria:</p>
+<ol>
+<li>
+<p>Be published on the government website or;</p>
+</li>
+<li>
+<p>Have been part-funded and publicly endorsed by the relevant government or;</p>
+</li>
+<li>
+<p>Be published on a global platform that publishes data submitted by Government (e.g., Eurostat or COMTRADE).</p>
+</li>
+</ol>
+<h2 id="domestic-plastics-production" tabindex="-1"><a class="observablehq-header-anchor" href="#domestic-plastics-production">Domestic Plastics Production</a></h2>
+<h3 id="domestic-primary-plastics-production" tabindex="-1"><a class="observablehq-header-anchor" href="#domestic-primary-plastics-production">Domestic Primary Plastics Production</a></h3>
+<h4 id="approach" tabindex="-1"><a class="observablehq-header-anchor" href="#approach">Approach</a></h4>
+<h5 id="european-data" tabindex="-1"><a class="observablehq-header-anchor" href="#european-data">European data</a></h5>
+<p>Eurostat was used in the first instance to identify European Countries that reported Primary Plastic Production data.</p>
+<p>Eurostat allows users to filter total production of “Plasticised polyvinyl chloride mixed with any other substance, in primary forms”. Where countries reported this data, it was assumed that they collected and reported data on “Domestic Primary Plastic Production”.</p>
+<h5 id="search-strings" tabindex="-1"><a class="observablehq-header-anchor" href="#search-strings">Search strings</a></h5>
+<p>The below search string was used for all countries.</p>
+<p><code>“Country” “Statistical Department” and/or “Country” “Statistics” “Gov” </code></p>
+<p>Once a countries statistical department was located, the term “Plastics” was searched in the search bar (if available). Any plastic production data displayed here was reviewed.</p>
+<p>If no results were available further searches were carried out:</p>
+<p><code>“Country” “Plastics Production” “Data” </code>
+<code>“Country” “Production” “Data” </code></p>
+<p>From here any data found was reviewed to determine if it fell under “Domestic Primary Plastics Production” or “Domestic Plastics Products”</p>
+<p>For European countries, where better data was found using these search strings, this new data superseded the Eurostat data.</p>
+<h4 id="sources" tabindex="-1"><a class="observablehq-header-anchor" href="#sources">Sources</a></h4>
+<p>Eurostat
+Government websites</p>
+<h4 id="caveats" tabindex="-1"><a class="observablehq-header-anchor" href="#caveats">Caveats</a></h4>
+<p>Some countries may not produce “primary plastics” and therefore may not publish this data. The score for these countries data are data “not found” until we have confirmation that the country does not produce primary plastics.</p>
+<p>Domestic Plastics Products</p>
+<h4 id="approach-1" tabindex="-1"><a class="observablehq-header-anchor" href="#approach-1">Approach</a></h4>
+<h5 id="individual-country-data" tabindex="-1"><a class="observablehq-header-anchor" href="#individual-country-data">Individual country data</a></h5>
+<p>The following search string was used to identify data sources.</p>
+<p><code>“Country” “Statistical Department” and/or “Country” “Statistics” “Gov” </code></p>
+<p>Once a countries statistical department is located, the term “Plastics” was searched in the search bar (if available). Any plastic production data displayed here was reviewed.</p>
+<p>If no results were available further searches were carried out:</p>
+<p><code>“Country” “Plastics Production” “Data” </code>
+<code>“Country” “Plastics” “Account” </code></p>
+<p>From here any data found was reviewed to determine if it fell under “Domestic Primary Plastics Production” or “Domestic Plastics Products”</p>
+<h4 id="sources-1" tabindex="-1"><a class="observablehq-header-anchor" href="#sources-1">Sources</a></h4>
+<p>Government websites</p>
+<h4 id="caveats-1" tabindex="-1"><a class="observablehq-header-anchor" href="#caveats-1">Caveats</a></h4>
+<p>Products containing plastics may be captured in other categories – and similarly, some of the products reported may contain other materials. However, for the purposes of understanding whether countries report plastic product production data this has limited impact.</p>
+<h3 id="plastics-consumption" tabindex="-1"><a class="observablehq-header-anchor" href="#plastics-consumption">Plastics Consumption</a></h3>
+<p>Very few sources distinguish between the consumption of virgin plastics and consumption of recycled plastics. This limitation is reflected in the lower scores given to countries for this data type.</p>
+<h4 id="approach-2" tabindex="-1"><a class="observablehq-header-anchor" href="#approach-2">Approach</a></h4>
+<h5 id="european-data-1" tabindex="-1"><a class="observablehq-header-anchor" href="#european-data-1">European data</a></h5>
+<p>Eurostat was used in the first instance to identify European Countries that reported Plastic Consumption data.</p>
+<p>Eurostat allows users to filter “Domestic Material Consumption” of “Fossil energy materials/carriers”. Where countries reported this data, it was assumed that they collected and reported data on “Plastics Consumption” plus other uses of fossil energy materials/carriers such as electricity, fuel and manufacturing.</p>
+<p>Because this consumption data was reported annually, but not split by plastics specifically, it was give a data score of:  *** (see table at the top of the page for description or rating).</p>
+<h5 id="individual-country-data-1" tabindex="-1"><a class="observablehq-header-anchor" href="#individual-country-data-1">Individual country data</a></h5>
+<p>For all countries, the following search string was used to identify data sources.</p>
+<p><code>“Country” “Statistical Department” and/or “Country” “Statistics” “Gov” </code></p>
+<p>Once a countries statistical department is located, the term “Plastics” was searched in the search bar (if available). Any plastic consumption data displayed here was reviewed.</p>
+<p>If no results were available further searches were carried out:</p>
+<p><code>“Country” “Plastics consumption” “Data” </code>
+<code>“Country” “Plastics” “Account” </code></p>
+<p>From here any data found was reviewed to determine if it described “Plastics Consumption”</p>
+<p>For European countries, where better data was found using these search strings, this superseded the Eurostat data.</p>
+<h4 id="sources-2" tabindex="-1"><a class="observablehq-header-anchor" href="#sources-2">Sources</a></h4>
+<p>Eurostat
+Government websites</p>
+<h4 id="caveats-2" tabindex="-1"><a class="observablehq-header-anchor" href="#caveats-2">Caveats</a></h4>
+<p>N/A</p>
+<h2 id="trade-data" tabindex="-1"><a class="observablehq-header-anchor" href="#trade-data">Trade data</a></h2>
+<h3 id="primary-material" tabindex="-1"><a class="observablehq-header-anchor" href="#primary-material">Primary Material</a></h3>
+<h4 id="approach-3" tabindex="-1"><a class="observablehq-header-anchor" href="#approach-3">Approach</a></h4>
+<p>For imports and exports of primary plastic material, the Standard international trade classification (SITC) code “575: Other Plastics, Primary form” was applied and an assessment was made as to whether each country annually reported this data to all “world” partners.</p>
+<p>Where countries did not report data on COMTRADE, the following search string was used to identify data sources.</p>
+<p><code>“Country” “Statistical Department” and/or “Country” “Statistics” “Gov” </code></p>
+<p>Once a countries statistical department is located, the term “Trade” was searched in the search bar (if available). Any trade data displayed here was reviewed for plastics-related trade data.</p>
+<p>If no plastics results were available, further searches were carried out in the search engine:</p>
+<p><code>“Country” “Trade” “Data” </code>
+<code>“Country” “Trade” “Data” “Gov” </code></p>
+<p>From here any data found was reviewed to determine if it described “Plastics Primary Material Trade data”</p>
+<h4 id="sources-3" tabindex="-1"><a class="observablehq-header-anchor" href="#sources-3">Sources</a></h4>
+<p>COMTRADE</p>
+<p>Government websites</p>
+<h4 id="caveats-3" tabindex="-1"><a class="observablehq-header-anchor" href="#caveats-3">Caveats</a></h4>
+<p>Some countries may have published relevant trade data within their own statistical websites. However, these sources were not reviewed if the data was found on COMTRADE during the initial search.</p>
+<h3 id="plastic-products" tabindex="-1"><a class="observablehq-header-anchor" href="#plastic-products">Plastic Products</a></h3>
+<h4 id="approach-4" tabindex="-1"><a class="observablehq-header-anchor" href="#approach-4">Approach</a></h4>
+<p>For imports and exports of plastic products, the SITC code “893: Articles of artificial plastic materials nes” was applied and an assessment was made as to whether each country annually reported this data to all “world” partners.</p>
+<p>Where countries did not report data on COMTRADE, the following search string was used to identify data sources.</p>
+<p><code>“Country” “Statistical Department” and/or “Country” “Statistics” “Gov” </code></p>
+<p>Once a countries statistical department is located, the term “Trade” was searched in the search bar (if available). Any trade data displayed here was reviewed.</p>
+<p>If no plastics results were available further searches were carried out in the search engine:</p>
+<p><code>“Country” “Trade” “Data” </code>
+<code>“Country” “Trade” “Data” “Gov” </code></p>
+<p>From here any data found was reviewed to determine if it described “Plastic Products Trade data”</p>
+<h4 id="sources-4" tabindex="-1"><a class="observablehq-header-anchor" href="#sources-4">Sources</a></h4>
+<p>COMTRADE</p>
+<p>Government websites</p>
+<h4 id="caveats-4" tabindex="-1"><a class="observablehq-header-anchor" href="#caveats-4">Caveats</a></h4>
+<p>Whilst the SITC code 893 is expected to cover most plastic products, plastic products are also captured in other SITC codes:</p>
+<p><code>58: Plastic Materials </code>
+<code>71994: Metal plastic joints </code></p>
+<p><code>85101: Footwear soles &amp; uppers of rubber or plast.mat </code></p>
+<p><code>85102: Footwear with soles of leather/rubber/plastic </code></p>
+<p>Some countries may have published relevant trade data within their own statistical websites. However, these sources were not reviewed if the data was found on COMTRADE during the initial search.</p>
+<h3 id="total-plastics-waste" tabindex="-1"><a class="observablehq-header-anchor" href="#total-plastics-waste">Total Plastics Waste</a></h3>
+<h4 id="approach-5" tabindex="-1"><a class="observablehq-header-anchor" href="#approach-5">Approach</a></h4>
+<p>In the first instance, for each country the following search strings were used:</p>
+<p><code>“Country” “Statistical Department” and/or “Country” “Statistics” “Gov” </code></p>
+<p>Once a countries statistical department is located, the term “Waste” was searched in the search bar (if available). Any waste data displayed here was reviewed and assessed to see if the country reported annual plastic waste data.</p>
+<p>If no results were available further searches were carried out in the search engine:</p>
+<p><code>“Country” “Plastics Waste” “Data” “Gov” </code></p>
+<p><code>“Country” “Plastics Waste” “Data”  </code></p>
+<p><code>“Country” “Waste” “Data” </code></p>
+<p><code>“Country” “Waste” “Account” </code></p>
+<p>From here any data found was reviewed to determine if it described “Waste data” and if this data was split by plastic waste.</p>
+<p>Finally, Eurostat data was reviewed for the countries that were still marked as “Plastic Waste” data “not found”. Eurostat does not split by material, but collates total waste generation data each year for most European countries.</p>
+<h4 id="sources-5" tabindex="-1"><a class="observablehq-header-anchor" href="#sources-5">Sources</a></h4>
+<p>Government websites</p>
+<p>Eurostat</p>
+<p>Caveats</p>
+<p>Some countries may have published plastic waste generation data within their own statistical websites. However, these sources were not reviewed if the data was found on Eurostat during the initial search.</p>
+<h3 id="waste-treatment" tabindex="-1"><a class="observablehq-header-anchor" href="#waste-treatment">Waste Treatment</a></h3>
+<h4 id="approach-6" tabindex="-1"><a class="observablehq-header-anchor" href="#approach-6">Approach</a></h4>
+<h5 id="european-data-2" tabindex="-1"><a class="observablehq-header-anchor" href="#european-data-2">European data</a></h5>
+<p>Eurostat was used in the first instance to identify European Countries that reported plastics waste treatment data.</p>
+<p>Eurostat enables users to filter by <code>“Plastic Wastes”</code> and then by:</p>
+<ul>
+<li>
+<p><code>“Recycling” </code></p>
+</li>
+<li>
+<p><code>“Energy Recovery” </code></p>
+</li>
+<li>
+<p><code>“Incineration” </code></p>
+</li>
+<li>
+<p><code>“Landfill” </code></p>
+</li>
+<li>
+<p><code>“Landfill and other” </code></p>
+</li>
+<li>
+<p><code>“Backfilling” </code></p>
+</li>
+<li>
+<p><code>“Other” </code></p>
+</li>
+<li>
+<p>Where countries reported this data, it was assumed that they collected and reported data on the following treatment types (as listed in the plastics data checklist):</p>
+</li>
+<li>
+<p>Recovered for recycling</p>
+</li>
+<li>
+<p>Waste to Energy</p>
+</li>
+<li>
+<p>Incinerated (without energy recovery)</p>
+</li>
+<li>
+<p>Landfilled</p>
+</li>
+</ul>
+<h5 id="individual-country-data-2" tabindex="-1"><a class="observablehq-header-anchor" href="#individual-country-data-2">Individual country data</a></h5>
+<p>For non-European countries, and countries that did not report data to Eurostat, the following search string was used to identify data sources.</p>
+<p><code>“Country” “Statistical Department” and/or “Country” “Statistics” “Gov” </code></p>
+<p>Once a countries statistical department is located, the term “Waste” was searched in the search bar (if available). Any plastic production data displayed here was reviewed.</p>
+<p>If no results were available further searches were carried out:</p>
+<p><code>“Country” “Recycling” “Data” “Gov” </code></p>
+<p><code>“Country” “Waste to Energy” “Data” “Gov” </code></p>
+<p><code>“Country” “Incineration” “Data” “Gov” </code></p>
+<p><code>“Country” “Landfill” “Data” “Gov” </code></p>
+<p>From here any data found was reviewed to determine if it was published by the government and if it split waste treatment to material-specific data i.e., plastics.</p>
+<h4 id="sources-6" tabindex="-1"><a class="observablehq-header-anchor" href="#sources-6">Sources</a></h4>
+<p>Eurostat</p>
+<p>Government websites</p>
+<h4 id="caveats-5" tabindex="-1"><a class="observablehq-header-anchor" href="#caveats-5">Caveats</a></h4>
+<p>Some countries may have published plastic waste treatment data within their own statistical websites. However, these sources were not reviewed if the data was found on Eurostat during the initial search.</p>
+<h3 id="waste-trade" tabindex="-1"><a class="observablehq-header-anchor" href="#waste-trade">Waste Trade</a></h3>
+<h4 id="approach-7" tabindex="-1"><a class="observablehq-header-anchor" href="#approach-7">Approach</a></h4>
+<p>For imports and exports of primary plastic material, the SITC code “579: Plastic waste, scrap etc” was applied and an assessment was made as to whether each country annually reported this data to all “world” partners.</p>
+<p>Where countries did not report data on COMTRADE, the following search string was used to identify data sources.</p>
+<p><code>“Country” “Statistical Department” and/or “Country” “Statistics” “Gov” </code></p>
+<p>Once a countries statistical department is located, the term “Trade” was searched in the search bar (if available). Any waste trade data displayed here was reviewed.</p>
+<p>If no results were available further searches were carried out:</p>
+<p><code>“Country” “Trade” “Data” </code>
+<code>“Country” “Trade” “Data” “Gov” </code></p>
+<p>From here any data found was reviewed to determine if it described “Plastics Waste Trade data”</p>
+<h4 id="sources-7" tabindex="-1"><a class="observablehq-header-anchor" href="#sources-7">Sources</a></h4>
+<p>COMTRADE</p>
+<p>Government Websites</p>
+<h4 id="caveats-6" tabindex="-1"><a class="observablehq-header-anchor" href="#caveats-6">Caveats</a></h4>
+<p>Some countries may have published relevant trade data within their own statistical websites. However, these sources were not reviewed if the data was found on COMTRADE during the initial search.</p>
+<h4 id="quality-assurance" tabindex="-1"><a class="observablehq-header-anchor" href="#quality-assurance">Quality Assurance</a></h4>
+<p>Carried out internally and reviewed externally by officials from the UK Government and Stats Canada.</p>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+  :root {
+    --sans-serif: "Roboto", sans-serif;
+  }
+  body, h1, h2, h3, h4, h5, h6 {
+    font-family: var(--sans-serif);
+  }
+</style></main>
+<footer id="observablehq-footer">
+<nav><a rel="prev" href="./3_map"><span>Map view</span></a><a rel="next" href="./5_contribute"><span>Get involved</span></a></nav>
+<div>
+  <div style="border-top: 1px solid var(--theme-divider); padding: 1.5rem 1rem; margin-top: 3rem; text-align: left; font-family: var(--sans-serif);">
+    <div style="display: flex; justify-content: left; align-items: left; flex-wrap: wrap; gap: 20px; margin-bottom: 1rem;">
+      <a href="https://www.unsw.edu.au/research/centre-for-sustainable-development-reform" target="_blank" rel="noopener noreferrer" title="UNSW Centre for Sustainable Development Reform">
+        <img src="./_file/data/unsw_csdr.1f32a9fb.png" alt="UNSW CSDR Logo" style="height: 80px; max-width: 400px; object-fit: contain; vertical-align: middle;">
+      </a>
+      <a href="https://www.oceanaccounts.org/" target="_blank" rel="noopener noreferrer" title="Global Ocean Accounts Partnership">
+        <img src="./_file/data/goap.61231f94.png" alt="GOAP Logo" style="height: 60px; max-width: 400px; object-fit: contain; vertical-align: middle;">
+      </a>
+      <a href="https://www.gov.uk/government/organisations/foreign-commonwealth-development-office" target="_blank" rel="noopener noreferrer" title="UK Blue Planet Fund (Foreign, Commonwealth &amp; Development Office)">
+        <img src="./_file/data/uk.c0d67696.jpeg" alt="UK Blue Planet Fund Logo" style="height: 80px; max-width: 400px; object-fit: contain; vertical-align: middle;">
+      </a>
+    </div>
+    <p style="font-size: 0.85em; color: var(--theme-foreground-muted); line-height: 1.5;">
+      Copyright: This work is led by the UNSW Centre for Sustainable Development Reform and Global Ocean Accounts Partnership with funding from the UK Blue Planet Fund.
+    </p>
+  </div>
+  </div>
+</footer>
+</div>

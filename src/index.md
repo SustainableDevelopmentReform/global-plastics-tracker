@@ -134,13 +134,17 @@ const statsCardContent = html`
 const aboutCardContent = html`
   <h2>Learn more about the tools</h2>
   <p>This tool is a global register for plastic waste data and policies, currently in development.</p>
-  <a href="/4_resources" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Discover more plastics resources &raquo;</a>
+  <a href="/4_methods" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Discover more plastics resources &raquo;</a>
 `;
 
 const contributeCardContent = html`
   <h2>Get involved</h2>
   <p>Your contributions can help improve its accuracy and comprehensiveness.</p>
   <a href="/5_contribute" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Learn how to contribute &raquo;</a>
+  <br><br><br>
+  <h2>Check out our expert insights</h2>
+  <p>Read more about the tools impact and other plastics resrouces</p>
+  <a href="/6_resources" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Discover more plastics resources &raquo;</a>
 `;
 
 // Content for the Right-Side Map Card (Image as a link)
@@ -154,6 +158,15 @@ const mapImageLink = html`
 ```
 
 <style>
+
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+  :root {
+    --sans-serif: "Roboto", sans-serif;
+  }
+  body, h1, h2, h3, h4, h5, h6 {
+    font-family: var(--sans-serif);
+  }
+
   .dashboard-grid {
     display: grid;
     gap: 1.5rem; /* Gap between cards */
@@ -262,6 +275,7 @@ const mapImageLink = html`
   </div>
   <div class="card about-card-item">
     ${aboutCardContent}
+    <img src="./data/ocean_plastic.png" alt="Ocean plastic visual" style="max-width: 100%; height: auto; margin-top: 1em; border-radius: 4px;">
   </div>
   <div class="card contribute-card-item">
     ${contributeCardContent}
