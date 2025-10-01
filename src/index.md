@@ -9,12 +9,6 @@
     <li><strong>Data scores:</strong> “Data scores” for each source according to reporting frequency and granularity</li>
     <li><strong>Insight into global progress:</strong> Insight into the countries with the most developed plastics data and an evidence-base for the gaps in global plastics data reporting across the plastics supply-chain</li>
   </ul>
-  <p>
-    Developed ahead of the Intergovernmental Negotiating Committee’s fifth session (INC-5), this tracker establishes a crucial evidence base that illustrates the current global landscape of plastics data availability. It was specifically designed to inform treaty negotiators about critical gaps and opportunities for improvement in international plastics monitoring frameworks.
-  </p>
-  <p>
-  Our team welcomes feedback to improve this tool for policymakers, researchers, and stakeholders. For feedback, updates or help, please explore our website or email <a href="mailto:helena.dickinson@unsw.edu.au">Helena Dickinson</a> or <a href="mailto:e.northrop@unsw.edu.au">Eliza Northrop</a>.
-  </p>
   
   <a href="/1_about" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Learn more about the register and tools &raquo;</a>
 </div>
