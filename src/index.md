@@ -19,6 +19,230 @@
   <a href="/1_about" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Learn more about the register and tools &raquo;</a>
 </div>
   
+## Plastics data registry
+
+```js
+// load the plastics data
+const plastics_ratings_raw = FileAttachment("data/global_plastics_waste_data_ratings_current.csv").csv({typed: true});
+// load the corresponding links data
+const plastics_links_raw = FileAttachment("data/global_plastics_waste_data_links_current.csv").csv({typed: false}); // URLs are strings
+```
+
+```js
+const valueColorMap = {
+  0: "#D3D3D3", 1: "#E67E22 ", 2: "#FFD8B1",
+  3: "#FFFFE0", 4: "#98FB98", 5: "#008000"
+};
+
+const scoreLegend = htl.html`<div class="color-legend-wrapper">
+  <div class="color-legend">
+    <strong class="legend-title">Data score colour coding:</strong>
+    ${Object.entries(valueColorMap)
+      .sort(([scoreA], [scoreB]) => parseInt(scoreA) - parseInt(scoreB))
+      .map(([score, color]) => htl.html`
+      <div class="legend-item">
+        <span class="legend-swatch" style="background-color: ${color};"></span>
+        <span class="legend-label">${score}</span>
+      </div>
+    `)}
+  </div>
+</div>`;
+```
+
+```js
+const numericColumnsToColorAndLink = [
+  "Domestic primary material", "Domestic Products", "Virgin content consumption",
+  "Recycled content consumption", "Primary material trade (imports)",
+  "Primary material trade (exports)", "Products (imports)", "Products (exports)",
+  "Total generated plastic waste", "Waste recovered for recycling", "Waste to Energy",
+  "Waste Incinerated (without energy recovery)", "Waste landfilled",
+  "Waste (import)", "Waste (Export)"
+];
+
+const plastics_ratings_all_rows = plastics_ratings_raw.map((raw_rating_row, index) => {
+  const processed_row = { __originalIndex: index };
+
+  for (const key in raw_rating_row) {
+    if (raw_rating_row.hasOwnProperty(key)) {
+      if (key === "Country" || key === "Region" || key === "Type") {
+        processed_row[key] = raw_rating_row[key];
+      } else {
+        const numVal = Number(raw_rating_row[key]);
+        if (!isNaN(numVal) && String(raw_rating_row[key]).trim() !== "") {
+          processed_row[key] = numVal;
+        } else {
+          processed_row[key] = raw_rating_row[key];
+        }
+      }
+    }
+  }
+
+  if (plastics_links_raw && index < plastics_links_raw.length) {
+    const link_data_for_row = plastics_links_raw[index];
+    for (const colName of numericColumnsToColorAndLink) {
+      if (processed_row.hasOwnProperty(colName)) {
+        const currentValue = processed_row[colName];
+        let urlValue = null;
+        if (link_data_for_row && link_data_for_row.hasOwnProperty(colName)) {
+          urlValue = String(link_data_for_row[colName]).trim();
+        }
+        processed_row[colName] = { value: currentValue, url: urlValue };
+      }
+    }
+  } else {
+    for (const colName of numericColumnsToColorAndLink) {
+      if (processed_row.hasOwnProperty(colName)) {
+        processed_row[colName] = { value: processed_row[colName], url: null };
+      }
+    }
+  }
+  return processed_row;
+});
+
+if (plastics_ratings_all_rows.length > 0) {
+  console.log("DEBUG Block 3: First row of processed plastics_ratings_all_rows (check for {value, url} objects):", JSON.parse(JSON.stringify(plastics_ratings_all_rows[0])));
+  if (numericColumnsToColorAndLink.length > 0 && plastics_ratings_all_rows[0].hasOwnProperty(numericColumnsToColorAndLink[0])) {
+    console.log(`DEBUG Block 3: Content of first linkable column ('${numericColumnsToColorAndLink[0]}') in first row:`, JSON.parse(JSON.stringify(plastics_ratings_all_rows[0][numericColumnsToColorAndLink[0]])));
+  }
+}
+if (!plastics_links_raw || plastics_links_raw.length === 0) {
+  console.warn("WARNING Block 3: plastics_links_raw is empty or not loaded. URLs will be missing.");
+}
+
+const tableSearch = Inputs.search(plastics_ratings_all_rows, {
+  placeholder: "Search table..."
+});
+const tableSearchValue = view(tableSearch);
+
+if (plastics_links_raw && plastics_links_raw.length > 0 && plastics_ratings_all_rows.length > 0) {
+  if (plastics_ratings_all_rows.length !== plastics_links_raw.length) {
+    console.warn("WARNING Block 3: Row count mismatch between ratings data and links data!");
+  }
+}
+```
+
+```js
+const colNames = plastics_ratings_all_rows.length > 0
+  ? Object.keys(plastics_ratings_all_rows[0]).filter(key => key !== "__originalIndex")
+  : [];
+
+const startList = ["Country", "Domestic primary material", "Domestic Products", "Primary material trade (imports)", "Primary material trade (exports)", "Total generated plastic waste"];
+const filteredStartList = startList.filter(key => key !== "__originalIndex");
+
+const selectedColumns = view(Inputs.checkbox(colNames, {
+  label: "Columns to display",
+  value: filteredStartList,
+  multiple: true
+}));
+```
+
+```js
+function createStyledCell(value, {backgroundColor = 'transparent', textAlign = 'left', padding = '5px 8px'} = {}) {
+  const span = document.createElement("span");
+  span.style.backgroundColor = backgroundColor;
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    span.style.color = '#f0f0f0';
+  } else {
+    span.style.color = 'black';
+  }
+  span.style.padding = padding;
+  span.style.display = "block";
+  span.style.borderRadius = "4px";
+  span.style.textAlign = textAlign;
+  span.textContent = String(value);
+  return span;
+}
+
+const tableCellFormats = {};
+
+if (plastics_ratings_all_rows && plastics_ratings_all_rows.length > 0) {
+  const allColumnNamesFromData = Object.keys(plastics_ratings_all_rows[0]).filter(key => key !== "__originalIndex");
+  const firstProcessedRow = plastics_ratings_all_rows[0];
+
+  for (const colName of allColumnNamesFromData) {
+    if (numericColumnsToColorAndLink.includes(colName)) {
+      tableCellFormats[colName] = (cellData_obj, i_filtered, rowData_filtered) => {
+        let ratingValue_to_display;
+        let url_for_link = null;
+
+        if (typeof cellData_obj === 'object' && cellData_obj !== null && cellData_obj.hasOwnProperty('value')) {
+          ratingValue_to_display = cellData_obj.value;
+          url_for_link = cellData_obj.url;
+        } else {
+          ratingValue_to_display = cellData_obj;
+          if (i_filtered < 1) {
+            console.warn(`Formatter for '${colName}': Expected cellData_obj to be {value, url}, but received:`, cellData_obj, "Row data:", rowData_filtered);
+          }
+        }
+
+        let styledContentSpan;
+        if (typeof ratingValue_to_display === 'number' && valueColorMap[ratingValue_to_display] !== undefined) {
+          styledContentSpan = createStyledCell(ratingValue_to_display, {backgroundColor: valueColorMap[ratingValue_to_display], textAlign: 'center'});
+        } else if (typeof ratingValue_to_display === 'number') {
+          styledContentSpan = createStyledCell(ratingValue_to_display, {textAlign: 'center'});
+        } else {
+          styledContentSpan = createStyledCell(String(ratingValue_to_display !== undefined && ratingValue_to_display !== null ? ratingValue_to_display : "N/A"), {textAlign: 'left'});
+        }
+
+        if (url_for_link && url_for_link !== "" && (url_for_link.startsWith('http://') || url_for_link.startsWith('https://'))) {
+          const anchor = document.createElement('a');
+          anchor.href = url_for_link;
+          anchor.target = "_blank";
+          anchor.rel = "noopener noreferrer";
+          anchor.style.display = "block";
+          anchor.style.textDecoration = "none";
+          anchor.style.color = "inherit";
+          anchor.appendChild(styledContentSpan);
+          return anchor;
+        } else {
+          return styledContentSpan;
+        }
+      };
+    } else if (firstProcessedRow && typeof firstProcessedRow[colName] === 'number') {
+      tableCellFormats[colName] = (cellValue) => createStyledCell(cellValue, {textAlign: 'right'});
+    } else {
+      tableCellFormats[colName] = (cellValue) => {
+        if (typeof cellValue === 'object' && cellValue !== null && cellValue.hasOwnProperty('value')) {
+          console.warn(`Formatter for non-linkable column '${colName}' received an unexpected object:`, cellValue);
+          return createStyledCell(String(cellValue.value), {textAlign: 'left'});
+        }
+        return createStyledCell(String(cellValue !== undefined && cellValue !== null ? cellValue : ""), {textAlign: 'left'});
+      };
+    }
+  }
+} else {
+  console.warn("Cell Formatting Block: plastics_ratings_all_rows is empty. Table cell formats cannot be created.");
+}
+```
+
+${scoreLegend}
+Refer to [the guide on using the tracker](./1_about#using-the-global-plastics-data-tracker) for information about the scores.
+
+```js
+const finalTable = view(Inputs.table(tableSearchValue, {
+  rows: 15,
+  columns: selectedColumns,
+  format: tableCellFormats,
+  width: "100%"
+}));
+```
+
+You can click any table entry with a rating >0 in the table to visit the original data source.  
+  
+You can also download all of the data rating as a [.csv file](https://github.com/SustainableDevelopmentReform/global-plastics-tracker/blob/main/src/data/global_plastics_waste_data_ratings_current.csv), and a new feature _coming soon_ will enable custom filters and selection to be downloaded.  
+
+<a href="https://github.com/SustainableDevelopmentReform/global-plastics-tracker/blob/main/src/data/global_plastics_waste_data_ratings_current.csv" download="plastic_data.csv">
+<button type=button">Download data</button>
+</a>
+
+<div class="small note">
+Our team welcomes feedback to improve this tool for policymakers, researchers, and stakeholders. For feedback, updates or help, please explore our website or email
+<a href="mailto:helena.dickinson@unsw.edu.au">Helena Dickinson</a>
+or
+<a href="mailto:e.northrop@unsw.edu.au">Eliza Northrop</a>.
+
+</div>
+
 ## Explore the plastics data register and visualisation tools
 
 ```js
@@ -229,6 +453,45 @@ const mapImageLink = html`
   .dashboard-grid .card p { /* General paragraph styling within cards */
     margin-bottom: 0.75em;
     line-height: 1.6;
+  }
+
+  .color-legend-wrapper {
+    margin: 2rem 0 1.5rem 0;
+  }
+
+  .color-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    font-size: 0.9em;
+    padding: 0.75rem 1rem;
+    background-color: var(--theme-background-alt);
+    border: 1px solid var(--theme-background);
+    border-radius: var(--theme-radius, 4px);
+  }
+
+  .legend-title {
+    font-weight: 600;
+    margin-right: 0.5rem;
+    color: var(--theme-foreground);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+  }
+
+  .legend-swatch {
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--theme-foreground-faint, #bbb);
+    border-radius: 3px;
+  }
+
+  .legend-label {
+    color: var(--theme-foreground-muted, #333);
   }
 
   /* Styles for the new statistic items format */

@@ -1,53 +1,63 @@
-# GitHub Codespaces + Observable Framework
+# Global Plastics Tracker
 
-This is an [Observable Framework](https://observablehq.com/framework) project. To start the local preview server, run:
+An interactive, Observable Framework–powered explorer for the global plastics landscape. The tracker curates open datasets and visual assets to help researchers, policy makers, and the public understand how plastic is produced, consumed, and disposed of across the world. Narrative pages walk through the problem space, while data tables, maps, and resource guides surface the underlying evidence.
 
-```
+## Observable Framework quick start
+
+Install dependencies (first run or after updates) and launch the local preview server:
+
+```bash
+npm install
 npm run dev
 ```
 
-Then visit <http://localhost:3000> to preview your project.
-
-For more, see <https://observablehq.com/framework/getting-started>.
+The site will be served at <http://localhost:3000>. Framework docs and recipes live at <https://observablehq.com/framework/getting-started> if you need extra guidance.
 
 ## Project structure
 
-A typical Framework project looks like this:
+The repository keeps Observable content under `src` and data assets in a dedicated `data` directory:
 
 ```ini
 .
 ├─ src
-│  ├─ components
-│  │  └─ timeline.js           # an importable module
-│  ├─ data
-│  │  ├─ launches.csv.js       # a data loader
-│  │  └─ events.json           # a static data file
-│  ├─ example-dashboard.md     # a page
-│  ├─ example-report.md        # another page
-│  └─ index.md                 # the home page
-├─ .gitignore
-├─ observablehq.config.js      # the project config file
+│  ├─ index.md                  # landing page for the tracker
+│  ├─ 1_about.md                # project context and partners
+│  ├─ 2_tables.md               # interactive dataset explorer
+│  ├─ 3_map.md                  # geospatial view of plastics indicators
+│  ├─ 4_methods.md              # methodology and documentation
+│  ├─ 5_contribute.md           # how to get involved or share data
+│  ├─ 6_resources.md            # curated resources and references
+│  └─ data
+│     ├─ data-utils.js          # helper functions for loading/transforming data
+│     ├─ plastics_countries.geojson
+│     ├─ global_plastics_waste_data_links_current.csv
+│     ├─ global_plastics_waste_data_ratings_current.csv
+│     ├─ map_placeholder.png
+│     ├─ ocean_plastic.png
+│     └─ photos/                # partner and contextual imagery
+├─ observablehq.config.js       # framework configuration and navigation
 ├─ package.json
+├─ package-lock.json
+├─ dist/                        # production build output
 └─ README.md
 ```
 
-**`src`** - This is the “source root” — where your source files live. Pages go here. Each page is a Markdown file. Observable Framework uses [file-based routing](https://observablehq.com/framework/routing), which means that the name of the file controls where the page is served. You can create as many pages as you like. Use folders to organize your pages.
+Key pages map directly to the navigation in `observablehq.config.js`, so renaming a Markdown file will change its route. Static assets and loaders live under `src/data`; use `data-utils.js` for any shared transform logic.
 
-**`src/index.md`** - This is the home page for your site. You can have as many additional pages as you’d like, but you should always have a home page, too.
+## Plastics tracker content
 
-**`src/data`** - You can put [data loaders](https://observablehq.com/framework/loaders) or static data files anywhere in your source root, but we recommend putting them here.
-
-**`src/components`** - You can put shared [JavaScript modules](https://observablehq.com/framework/javascript/imports) anywhere in your source root, but we recommend putting them here. This helps you pull code out of Markdown files and into JavaScript modules, making it easier to reuse code across pages, write tests and run linters, and even share code with vanilla web applications.
-
-**`observablehq.config.js`** - This is the [project configuration](https://observablehq.com/framework/config) file, such as the pages and sections in the sidebar navigation, and the project’s title.
+- **Scope:** tracks global plastic production, waste generation, recycling, and leakage indicators sourced from the Circularity in Sustainable Development Research Hub (CSDR) and partner datasets.
+- **Visuals:** map, timeline, and narrative pages blend Markdown, Observable cells, and imagery in `src/data/photos`.
+- **Updates:** replace CSV or GeoJSON files in `src/data` and refresh the site; the Observable build pipeline will pick up changes automatically.
+- **Contributing:** guidelines and contact details live in `src/5_contribute.md`; use issues or pull requests to suggest datasets or corrections.
 
 ## Command reference
 
-| Command           | Description                                              |
-| ----------------- | -------------------------------------------------------- |
-| `npm install`            | Install or reinstall dependencies                        |
-| `npm run dev`        | Start local preview server                               |
-| `npm run build`      | Build your static site, generating `./dist`              |
-| `npm run deploy`     | Deploy your project to Observable                        |
-| `npm run clean`      | Clear the local data loader cache                        |
-| `npm run observable` | Run commands like `observable help`                      |
+| Command | Description |
+| ------- | ----------- |
+| `npm install` | Install or refresh dependencies |
+| `npm run dev` | Start the local preview server |
+| `npm run build` | Generate the static site in `dist/` |
+| `npm run deploy` | Publish to Observable (requires auth) |
+| `npm run clean` | Clear the Framework data loader cache |
+| `npm run observable` | Access the Observable CLI (e.g., `observable help`) |
