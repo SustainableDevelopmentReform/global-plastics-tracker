@@ -223,19 +223,8 @@ const finalTable = view(Inputs.table(tableSearchValue, {
 
 You can click any table entry with a rating >0 in the table to visit the original data source.  
   
-You can also download all of the data rating as a [.csv file](https://github.com/SustainableDevelopmentReform/global-plastics-tracker/blob/main/src/data/global_plastics_waste_data_ratings_current.csv), and a new feature _coming soon_ will enable custom filters and selection to be downloaded.  
-
-<a href="https://github.com/SustainableDevelopmentReform/global-plastics-tracker/blob/main/src/data/global_plastics_waste_data_ratings_current.csv" download="plastic_data.csv">
-<button type=button">Download data</button>
-</a>
-
-<div class="small note">
-Our team welcomes feedback to improve this tool for policymakers, researchers, and stakeholders. For feedback, updates or help, please explore our website or email
-<a href="mailto:helena.dickinson@unsw.edu.au">Helena Dickinson</a>
-or
-<a href="mailto:e.northrop@unsw.edu.au">Eliza Northrop</a>.
-
-</div>
+For downloads and other features, head to the main data registry page:
+<a href="/2_tables" style="display: inline-block; margin-top: 1.5em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Plastics data registry &raquo;</a>
 
 ## Explore the plastics data register and visualisation tools
 
@@ -361,7 +350,7 @@ const contributeCardContent = html`
   <a href="/5_contribute" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Learn how to contribute &raquo;</a>
   <br><br><br>
   <h2>Check out our expert insights</h2>
-  <p>Read more about the tools impact and other plastics resrouces</p>
+  <p>Read more about the tools impact and other plastics resources</p>
   <a href="/6_resources" style="display: inline-block; margin-top: 0em; padding: 0.5em 1em; background-color: var(--theme-foreground-focus); color: var(--theme-background); text-decoration: none; border-radius: 4px;">Discover more plastics resources &raquo;</a>
 `;
 
